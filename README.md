@@ -1,17 +1,22 @@
+# Regulatory Chatbot (CMC) — v3
 
-# CGT Regulatory Chatbot (CMC) — v2
-
-Adds new intents and a clearer **region toggle**:
-- Intents: **specification justification**, **PPQ timing**, **Module 3 mapping**, plus the original (potency, report results, stability, CCIT/shipping, RCL/RCA, comparability).
-- Region phrasing: **Global**, **US (FDA‑centric)**, **EU (EMA‑centric)** notes appended to answers.
-- Quick starter buttons updated to include new topics.
+**Phase-aware, product-specific guidance** with a simple knowledge base and style controls.
 
 ## Run locally
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
+Open the local URL shown in the terminal.
 
 ## Deploy
-- Streamlit Community Cloud: upload `app.py` and `requirements.txt` to a public repo; set main file to `app.py`.
-- Hugging Face Spaces: create a Streamlit Space and upload the same two files.
+- **Streamlit Community Cloud:** Create a public repo with `app.py`, `requirements.txt`, and the `kb/` folder → Deploy with main file `app.py`.
+- **Hugging Face Spaces (no GitHub):** New Space → SDK: Streamlit → Upload files directly → Use the Space URL in your Carrd button.
+
+## Customize (your "training" data)
+- Edit **`kb/guidance.yaml`** to change bullets per intent → product → stage → region.
+- Edit **`kb/style.yaml`** to control format, maximum bullets, and words per bullet.
+- Use the app's **feedback** box to propose rewrites. Accepting a rewrite saves it to `feedback.jsonl` for later merging back into `kb/guidance.yaml`.
+
+## Stages
+Stages are labeled as **Phase 1**, **Phase 2**, and **Phase 3 (Registrational)** throughout.
