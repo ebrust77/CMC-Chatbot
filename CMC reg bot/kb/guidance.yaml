@@ -1,0 +1,121 @@
+CRL Insights:
+  Cell Therapy:
+    General:
+      Global:
+        Guidance Summary:
+          - Public CRLs (2019–2024 approvals) highlight recurring CMC themes: potency justification, aseptic validation scope, comparability after changes, and PPQ readiness.
+          - Letters often request clearer CTD mapping, data traceability, and alignment of specs with validation and stability evidence.
+        What reviewers look for:
+          - MoA-linked potency matrices with acceptance rationale; justification for report-only items in early phase.
+          - APS/media fill coverage of worst-case interventions and durations; EM/personnel qual trends and CAPA closeout.
+          - Defined comparability matrices and decision rules; CTD consistency across S/P sections.
+          - PPQ protocols with predefined criteria and deviation handling; site/material configuration identical to commercial.
+        Common pitfalls:
+          - Single-readout potency without orthogonal support; vague acceptance “ranges.”
+          - APS that omit critical interventions or shift changes; weak CCIT link to final container/shipper.
+          - Late specification freeze, missing bridging for method/process changes; inconsistent terminology between sections.
+        Suggested next steps:
+          - Tighten potency rationale; finalize APS scope and acceptance; predefine comparability rules and document PPQ readiness evidence.
+  LVV (Vector RM):
+    General:
+      Global:
+        Guidance Summary:
+          - CRLs referencing vector supply frequently flag assay transfer/robustness, impurity profiles, and lot-to-lot variability.
+        What reviewers look for:
+          - Method lifecycle evidence at supplying sites; identity/potency/impurity clarity and acceptance logic.
+          - Clear link between LVV attributes and cell therapy CQAs; sampling plans that support integration with DP specs.
+        Suggested next steps:
+          - Align LVV PPQ and method readiness with the cell therapy control strategy; ensure change notifications and bridging rules are in place.
+
+Aseptic Process Validation (APV):
+  Cell Therapy:
+    Phase 1:
+      Global:
+        Guidance Summary:
+          - Define aseptic boundary and flows; perform targeted APS for high-risk steps; qualify personnel and equipment; establish EM plan.
+        What reviewers look for:
+          - Risk-based APS scope; smoke studies; intervention lists and worst-case logic; CCIT strategy consistent with storage/shipping.
+        Suggested next steps:
+          - Build toward late-phase APS at intended configuration; document deviations and retraining triggers.
+    Phase 2:
+      Global:
+        Guidance Summary:
+          - Expand APS to intended configuration and duration; include planned/unplanned interventions; strengthen EM/personnel trending.
+        What reviewers look for:
+          - APS protocols with acceptance criteria; airflow visualization; action/alert levels tied to risk.
+        Suggested next steps:
+          - Lock configuration for registrational APS; align with DP filling/packaging steps.
+    Phase 3 (Registrational):
+      Global:
+        Guidance Summary:
+          - Execute APS (media fills) at commercial sites/scales with worst-case coverage; finalize CCIT verification and transport simulation.
+        What reviewers look for:
+          - APS reports, deviations/CAPA, successful personnel qualifications, EM trends supporting sterility assurance.
+        Suggested next steps:
+          - Place APS and CCIT summaries in CTD (e.g., P.3.5/P.7 as applicable); define ongoing verification plan.
+    Commercial:
+      Global:
+        Guidance Summary:
+          - Maintain validated state with periodic APS and CPV/OPV indicators; manage changes via change control.
+        What reviewers look for:
+          - Trend reviews and revalidation triggers; alignment of deviations/CAPA to aseptic performance.
+        Suggested next steps:
+          - Schedule periodic media fills per policy; update risk assessments after configuration/personnel changes.
+
+PPQ Timing (LVV DS):
+  LVV (Vector RM):
+    Phase 2:
+      Global:
+        Guidance Summary:
+          - Mature LVV DS process/analytics; align sites and materials; lock configuration leading into PPQ.
+        What reviewers look for:
+          - Site readiness, material control, and method robustness.
+        Suggested next steps:
+          - Prepare PPQ protocols for DS lots supplying Cell Therapy.
+    Phase 3 (Registrational):
+      Global:
+        Guidance Summary:
+          - Execute LVV DS PPQ at commercial sites/scales; integrate sampling/acceptance with Cell Therapy requirements.
+        What reviewers look for:
+          - Protocols, predefined acceptance, deviations handling; linkage to control strategy.
+        Suggested next steps:
+          - Complete PPQ and compile reports before BLA or per agreement.
+
+PPQ in BLA:
+  Cell Therapy:
+    Phase 3 (Registrational):
+      Global:
+        Guidance Summary:
+          - Include DS/DP process validation summaries (e.g., 3.2.S.2.5 / 3.2.P.3.5), PPQ protocols/reports, and rationale.
+          - Traceability from development to control strategy and specs is expected.
+        What reviewers look for:
+          - PPQ acceptance vs predefined criteria, deviations assessment, and comparability bridging.
+        Suggested next steps:
+          - Prepare integrated validation summary; ensure CTD cross-references are consistent.
+
+Potency:
+  Cell Therapy:
+    Phase 1:
+      Global:
+        Guidance Summary:
+          - Use multi-attribute approach: activation (CD69/CD25), cytotoxicity (flow killing), ± cytokines as supportive only; define controls and E:T ratios.
+        What reviewers look for:
+          - Donor variability plan and reference standard strategy; system suitability and precision bands.
+        Suggested next steps:
+          - Define “report → spec” triggers and outline validation path by Phase 3.
+    Phase 2:
+      Global:
+        Guidance Summary:
+          - Narrow to MoA-strong assays; begin data-driven acceptance criteria.
+        What reviewers look for:
+          - Method robustness and guardrails for variability; trending and capability evidence.
+        Suggested next steps:
+          - Draft specs and plan bridging if readouts/targets change.
+    Phase 3 (Registrational):
+      Global:
+        Guidance Summary:
+          - Converge to validated assays with final acceptance criteria; map to CTD sections.
+        What reviewers look for:
+          - Validation summary and equivalence if changes occurred; cross-references to specs.
+        Suggested next steps:
+          - Finalize control strategy and placement in Module 3.

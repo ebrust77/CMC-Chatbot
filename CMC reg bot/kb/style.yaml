@@ -1,0 +1,9 @@
+display:
+  format: "Bulleted"
+  bullets_max: 7
+  words_per_bullet_max: 24
+  include_sections: ["Guidance Summary","What reviewers look for","Suggested next steps","Common pitfalls"]
+tone:
+  voice: "concise, plain language, active voice"
+  avoid_phrases: ["it depends","as appropriate","robust","holistic"]
+  prefer_terms: ["phase-appropriate","data-driven","MoA-linked"]
