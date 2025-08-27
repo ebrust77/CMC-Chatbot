@@ -3,12 +3,11 @@ import streamlit as st
 import yaml, re
 from pathlib import Path
 
-APP_VERSION = "3.8.6"
+APP_VERSION = "3.8.7"
 st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
 
 BASE_DIR = Path(__file__).parent
 KB_PATH = BASE_DIR / "kb" / "guidance.yaml"
-STYLE_PATH = BASE_DIR / "kb" / "style.yaml"
 
 def load_yaml(path: Path, fallback: dict):
     try:
@@ -17,7 +16,7 @@ def load_yaml(path: Path, fallback: dict):
     except Exception:
         return fallback
 
-# Tiny built-in safety net; rich content is in kb/guidance.yaml
+# Tiny built-in safety net; rich content lives in kb/guidance.yaml
 SAMPLE_KB = {
     "CRL Insights": {
         "Cell Therapy": {
@@ -58,36 +57,28 @@ def get_block_with_trace(intent, product, stage, region):
     d = KB.get(intent, {}); trace = []
     try:
         blk = d[product][stage][region]; trace.append(f"{product}/{stage}/{region} (exact)"); return blk, " > ".join(trace)
-    except Exception:
-        trace.append(f"{product}/{stage}/{region} (miss)")
+    except Exception: pass; trace.append(f"{product}/{stage}/{region} (miss)")
     blk, t = _any_region_block(d, product, stage)
-    if blk:
-        trace.append(t); return blk, " > ".join(trace)
+    if blk: trace.append(t); return blk, " > ".join(trace)
     try:
         blk = d[product]["General"][region]; trace.append(f"{product}/General/{region} (fallback)"); return blk, " > ".join(trace)
-    except Exception:
-        trace.append(f"{product}/General/{region} (miss)")
+    except Exception: pass; trace.append(f"{product}/General/{region} (miss)")
     blk, t = _any_region_block(d, product, "General")
-    if blk:
-        trace.append(t); return blk, " > ".join(trace)
+    if blk: trace.append(t); return blk, " > ".join(trace)
     try:
         blk = d["General"][stage][region]; trace.append(f"General/{stage}/{region} (fallback)"); return blk, " > ".join(trace)
-    except Exception:
-        trace.append(f"General/{stage}/{region} (miss)")
+    except Exception: pass; trace.append(f"General/{stage}/{region} (miss)")
     blk, t = _any_region_block(d, "General", stage)
-    if blk:
-        trace.append(t); return blk, " > ".join(trace)
+    if blk: trace.append(t); return blk, " > ".join(trace)
     blk, t = _any_region_block(d, "General", "General")
-    if blk:
-        trace.append(t); return blk, " > ".join(trace)
+    if blk: trace.append(t); return blk, " > ".join(trace)
     return {}, "no-match"
 
 def merge_blocks(blocks):
     merged = {}
     for b in blocks:
         for sec, items in (b or {}).items():
-            if not isinstance(items, list):
-                continue
+            if not isinstance(items, list): continue
             merged.setdefault(sec, [])
             seen = set(merged[sec])
             for it in items:
@@ -100,33 +91,15 @@ def simplify_text(text: str) -> str:
     text = re.sub(r"\s{2,}", " ", text)
     return text.strip()
 
-def format_for_display(text: str, bullets_max: int = 7, words_per_bullet_max: int = 24) -> str:
+def format_for_display(text: str) -> str:
     # Normalize line endings
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    # Convert bullet symbols to Markdown dashes
+    # Convert bullet symbol to markdown dashes
     text = re.sub(r"(?m)^\s*•\s+", "- ", text)
-    # Convert '###' headers to bold
-    text = re.sub(r"(?m)^###\s+(.*)$", r"**\1**", text)
-    text = re.sub(r"(?m)^####\s+(.*)$", r"**\1**", text)
-    # Ensure a blank line BEFORE and AFTER any bold header that stands alone
-    text = re.sub(r"(?m)^(\*\*[^\n]+\*\*)\s*$", r"\n\1\n", text)
-    # Collapse 3+ newlines to exactly 2
+    # Collapse 3+ newlines to exactly 2 (keep blank lines intact)
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = simplify_text(text)
-    # Also enforce that if a bold header appears mid-line (edge case), split it onto a new line
-    text = re.sub(r"([^\n])\s+(\*\*[^\*]+\*\*)", r"\1\n\n\2", text)
     return text.strip()
-
-FALLBACKS = {
-    "CRL Insights": {
-        "Guidance Summary": [
-            "Common themes: potency justification gaps, APS scope, unclear comparability rules, PPQ readiness, and CTD inconsistencies."
-        ],
-        "Suggested next steps": [
-            "Clarify MoA-linked potency; finalize APS acceptance; predefine comparability decision rules; confirm PPQ readiness; harmonize CTD cross-refs."
-        ]
-    }
-}
 
 def render_answer(intent, product, stage, region, detail="Medium"):
     # Assemble sources by detail-depth
@@ -158,7 +131,7 @@ def render_answer(intent, product, stage, region, detail="Medium"):
                 sources.append(blk); traces.append(tr)
 
     if not sources:
-        merged = FALLBACKS.get(intent, {"Guidance Summary": ["No KB block found."],"Suggested next steps": ["Add content to kb/guidance.yaml."]})
+        merged = {"Guidance Summary": ["No KB block found."], "Suggested next steps": ["Add content to kb/guidance.yaml."]}
         trace = "fallback: HARD_DEFAULT (KB path not found)"
     else:
         merged = merge_blocks(sources)
@@ -171,31 +144,30 @@ def render_answer(intent, product, stage, region, detail="Medium"):
         sections = ["Guidance Summary","What reviewers look for","Suggested next steps"]; bullets_max = 6; words_max = 24
     else:
         sections = ["Guidance Summary","What reviewers look for","Common pitfalls","Checklist","CTD Map","Examples","Suggested next steps"]
-        deep_keys = [k for k in merged.keys() if isinstance(k, str) and k.startswith(DEEP_PREFIX)]
+        deep_keys = [k for k in merged.keys() if isinstance(k, str) and k.startswith("Deep:")]
         sections += deep_keys; bullets_max = 12; words_max = 40
 
-    # Build Markdown with explicit blank lines around headers
-    parts, any_content = [], False
+    # Build Markdown with real headings to guarantee separation
+    out_lines, any_content = [], False
     for sec in sections:
         if sec in merged and merged[sec]:
-            parts.append("")                 # blank line before header
-            title = sec if not sec.startswith(DEEP_PREFIX) else sec.replace(DEEP_PREFIX, "").strip()
-            parts.append(f"**{title}**")     # header
-            parts.append("")                 # blank line after header
+            title = sec if not sec.startswith("Deep:") else sec.replace("Deep:", "").strip()
+            out_lines.append("")                 # blank line before header
+            out_lines.append(f"### {title}")     # Markdown heading
+            out_lines.append("")                 # blank line after header
             for b in merged[sec][:bullets_max]:
                 words = b.split()
                 trimmed = " ".join(words[:words_max])
-                if trimmed.startswith("- "):
-                    parts.append(trimmed)
-                else:
-                    parts.append("- " + trimmed)
+                if not trimmed.startswith("- "):
+                    trimmed = "- " + trimmed
+                out_lines.append(trimmed)
             any_content = True
 
     if not any_content:
         return "_No KB block found and no fallback content._", "debug: empty"
 
-    md = "\n".join(parts).strip()
-    return format_for_display(md, bullets_max, words_max), trace
+    md = "\n".join(out_lines).strip()
+    return format_for_display(md), trace
 
 # --- UI ---
 st.markdown(f"**CMC Chatbot**  \\ **Version:** {APP_VERSION}")
