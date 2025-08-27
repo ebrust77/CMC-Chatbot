@@ -2,9 +2,8 @@
 import streamlit as st
 import yaml, re, json
 from pathlib import Path
-from datetime import datetime
 
-APP_VERSION = "3.7.6"
+APP_VERSION = "3.7.7"
 
 st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
 
@@ -29,7 +28,6 @@ STYLE = load_yaml(STYLE_PATH, {
              "prefer_terms":["phase-appropriate","data-driven","MoA-linked"]}
 })
 
-# --- Hard fallbacks so you always get content ---
 FALLBACKS = {
     "Report Results": {
         "Guidance Summary": [
@@ -172,38 +170,38 @@ def _any_region_block(dct, product, stage):
         if isinstance(region_map, dict) and region_map:
             for pref in ("US (FDA)", "EU (EMA)", "Global"):
                 if pref in region_map:
-                    return region_map[pref], f"{{product}}/{{stage}}/{{pref}} (fallback:any-region)"
+                    return region_map[pref], f"{product}/{stage}/{pref} (fallback:any-region)"
             first_key = next(iter(region_map.keys()))
-            return region_map[first_key], f"{{product}}/{{stage}}/{{first_key}} (fallback:first-region)"
+            return region_map[first_key], f"{product}/{stage}/{first_key} (fallback:first-region)"
     except Exception:
         pass
-    return {{}}, None
+    return {}, None
 
 def get_block_with_trace(intent, product, stage, region):
-    d = KB.get(intent, {{}}); trace = []
+    d = KB.get(intent, {}); trace = []
     try:
-        blk = d[product][stage][region]; trace.append(f"{{product}}/{{stage}}/{{region}} (exact)"); return blk, " > ".join(trace)
-    except Exception: pass; trace.append(f"{{product}}/{{stage}}/{{region}} (miss)")
+        blk = d[product][stage][region]; trace.append(f"{product}/{stage}/{region} (exact)"); return blk, " > ".join(trace)
+    except Exception: pass; trace.append(f"{product}/{stage}/{region} (miss)")
     blk, t = _any_region_block(d, product, stage)
     if blk: trace.append(t); return blk, " > ".join(trace)
     try:
-        blk = d[product]["General"][region]; trace.append(f"{{product}}/General/{{region}} (fallback)"); return blk, " > ".join(trace)
-    except Exception: pass; trace.append(f"{{product}}/General/{{region}} (miss)")
+        blk = d[product]["General"][region]; trace.append(f"{product}/General/{region} (fallback)"); return blk, " > ".join(trace)
+    except Exception: pass; trace.append(f"{product}/General/{region} (miss)")
     blk, t = _any_region_block(d, product, "General")
     if blk: trace.append(t); return blk, " > ".join(trace)
     try:
-        blk = d["General"][stage][region]; trace.append(f"General/{{stage}}/{{region}} (fallback)"); return blk, " > ".join(trace)
-    except Exception: pass; trace.append(f"General/{{stage}}/{{region}} (miss)")
+        blk = d["General"][stage][region]; trace.append(f"General/{stage}/{region} (fallback)"); return blk, " > ".join(trace)
+    except Exception: pass; trace.append(f"General/{stage}/{region} (miss)")
     blk, t = _any_region_block(d, "General", stage)
     if blk: trace.append(t); return blk, " > ".join(trace)
     blk, t = _any_region_block(d, "General", "General")
     if blk: trace.append(t); return blk, " > ".join(trace)
-    return {{}}, "no-match"
+    return {}, "no-match"
 
 def merge_blocks(blocks):
-    merged = {{}}
+    merged = {}
     for b in blocks:
-        for sec, items in (b or {{}}).items():
+        for sec, items in (b or {}).items():
             if not isinstance(items, list): continue
             merged.setdefault(sec, [])
             seen = set(merged[sec])
@@ -254,34 +252,34 @@ def render_answer(intent, product, stage, region, detail="Medium"):
     for sec in sections:
         if sec in merged and merged[sec]:
             if lines: lines.append("")
-            lines.append(f"**{{sec}}**")
+            lines.append(f"**{sec}**")
             for b in merged[sec]:
-                lines.append(f"- {{b}}")
+                lines.append(f"- {b}")
             any_content = True
 
     if not any_content:
         for sec, items in merged.items():
             if items:
-                lines.append(f"**{{sec}}**")
-                for b in items: lines.append(f"- {{b}}")
+                lines.append(f"**{sec}**")
+                for b in items: lines.append(f"- {b}")
                 any_content = True
         if not any_content:
             return "_No KB block found and no fallback content._", "debug: empty"
 
-    REGION_NOTES = {{
+    REGION_NOTES = {
         "US (FDA)": ["- Consider INTERACT/Type C and pre-BLA timing.", "- Keep CTD mapping consistent across 3.2.S/3.2.P (e.g., S.2.5/P.3.5 for process validation)."],
         "EU (EMA)": ["- Consider Scientific Advice timeline; ensure MAA section mapping.", "- Align with EU expectations for aseptic processing and PV reporting."]
-    }}
+    }
     notes = REGION_NOTES.get(region, [])
     if notes:
         lines.append("")
-        lines.append(f"**Region notes ({{region}})**")
+        lines.append(f"**Region notes ({region})**")
         lines.extend(notes)
 
     return "\n".join(lines).strip(), trace
 
 # --- UI ---
-st.markdown(f"**CMC Chatbot**  \\ **Version:** {{APP_VERSION}}")
+st.markdown(f"**CMC Chatbot**  \\ **Version:** {APP_VERSION}")
 
 with st.sidebar:
     st.subheader("Inputs")
