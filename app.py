@@ -3,7 +3,7 @@ import streamlit as st
 import yaml, re
 from pathlib import Path
 
-APP_VERSION = "3.8.7"
+APP_VERSION = "3.8.8"
 st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
 
 BASE_DIR = Path(__file__).parent
@@ -16,27 +16,12 @@ def load_yaml(path: Path, fallback: dict):
     except Exception:
         return fallback
 
-# Tiny built-in safety net; rich content lives in kb/guidance.yaml
-SAMPLE_KB = {
-    "CRL Insights": {
-        "Cell Therapy": {
-            "General": {
-                "US (FDA)": {
-                    "Guidance Summary": [
-                        "Public CRLs highlight potency rationale gaps, APS scope/acceptance, comparability rules, PPQ readiness, CTD consistency."
-                    ],
-                    "Suggested next steps": [
-                        "Tighten MoA-linked potency; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD."
-                    ]
-                }
-            }
-        }
-    }
-}
-
+SAMPLE_KB = {}  # intentionally empty; rely on YAML now
 KB = load_yaml(KB_PATH, {})
 if not isinstance(KB, dict) or not KB:
-    KB = SAMPLE_KB
+    KB = {
+        "Potency": {"Cell Therapy": {"General": {"US (FDA)": {"Guidance Summary": ["No KB block found."]}}}}
+    }
 
 DEEP_PREFIX = "Deep:"
 
@@ -92,17 +77,13 @@ def simplify_text(text: str) -> str:
     return text.strip()
 
 def format_for_display(text: str) -> str:
-    # Normalize line endings
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    # Convert bullet symbol to markdown dashes
     text = re.sub(r"(?m)^\s*•\s+", "- ", text)
-    # Collapse 3+ newlines to exactly 2 (keep blank lines intact)
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = simplify_text(text)
     return text.strip()
 
 def render_answer(intent, product, stage, region, detail="Medium"):
-    # Assemble sources by detail-depth
     if detail == "Short":
         key_sets = [[(product, stage, region)]]
     elif detail == "Medium":
@@ -132,12 +113,11 @@ def render_answer(intent, product, stage, region, detail="Medium"):
 
     if not sources:
         merged = {"Guidance Summary": ["No KB block found."], "Suggested next steps": ["Add content to kb/guidance.yaml."]}
-        trace = "fallback: HARD_DEFAULT (KB path not found)"
+        trace = "fallback: HARD_DEFAULT (KB empty or path not found)"
     else:
         merged = merge_blocks(sources)
         trace = " | ".join(traces)
 
-    # Section ordering by depth
     if detail == "Short":
         sections = ["Guidance Summary","Suggested next steps"]; bullets_max = 3; words_max = 18
     elif detail == "Medium":
@@ -147,14 +127,13 @@ def render_answer(intent, product, stage, region, detail="Medium"):
         deep_keys = [k for k in merged.keys() if isinstance(k, str) and k.startswith("Deep:")]
         sections += deep_keys; bullets_max = 12; words_max = 40
 
-    # Build Markdown with real headings to guarantee separation
     out_lines, any_content = [], False
     for sec in sections:
         if sec in merged and merged[sec]:
             title = sec if not sec.startswith("Deep:") else sec.replace("Deep:", "").strip()
-            out_lines.append("")                 # blank line before header
-            out_lines.append(f"### {title}")     # Markdown heading
-            out_lines.append("")                 # blank line after header
+            out_lines.append("")
+            out_lines.append(f"### {title}")
+            out_lines.append("")
             for b in merged[sec][:bullets_max]:
                 words = b.split()
                 trimmed = " ".join(words[:words_max])
@@ -169,7 +148,6 @@ def render_answer(intent, product, stage, region, detail="Medium"):
     md = "\n".join(out_lines).strip()
     return format_for_display(md), trace
 
-# --- UI ---
 st.markdown(f"**CMC Chatbot**  \\ **Version:** {APP_VERSION}")
 
 with st.sidebar:
