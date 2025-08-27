@@ -1,0 +1,189 @@
+Report Results:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Use report-only (RR) for characterization/non-disposition tests; apply acceptance criteria to disposition-critical assays (identity, sterility, mycoplasma, endotoxin, where applicable potency).
+          - Define explicit triggers to convert RR→Spec (e.g., ≥10–20 lots, method qualification, capability ≥ Cpk 1.33, stability evidence, clinical exposure milestones).
+        What reviewers look for:
+          - RR→Spec matrix listing assay, phase status, trigger, and target phase; alignment to batch disposition and CoA.
+          - CTD text that is consistent across S/P sections and avoids implying criteria where none exist.
+        Common pitfalls:
+          - Keeping a CQA-critical assay as RR without a time-bound plan; inconsistency between Module 3 and actual release decisions.
+        Checklist:
+          - [ ] Identify disposition-critical assays vs characterization.
+          - [ ] Define numeric triggers for RR→Spec.
+          - [ ] Ensure CoA language matches Module 3.
+          - [ ] Plan bridging if the readout/platform changes.
+        CTD Map:
+          - Spec rationale in S.4.5/P.5.6; methods in S.4.2/P.5.2; validation in S.4.3/P.5.3; lifecycle in S/P.2.6–2.7.
+      EU (EMA):
+        Guidance Summary:
+          - RR for characterization; acceptance criteria for disposition-critical assays; align with EU expectations and phase-appropriate evidence.
+
+Aseptic Process Validation (APV):
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Demonstrate aseptic assurance via APS reflecting worst-case duration and interventions; qualify personnel; trend EM; align CCIT to final container/shipper.
+        What reviewers look for:
+          - APS protocols with predefined acceptance (units, incubation, turbidity thresholds), intervention lists, and airflow visualization.
+        Common pitfalls:
+          - Omitting high-risk interventions; APS duration shorter than commercial batch time.
+        Checklist:
+          - [ ] Planned & unplanned interventions cover worst-case.
+          - [ ] APS duration ≥ max batch time; include shift change.
+          - [ ] Personnel/equipment qualified; EM trending established.
+          - [ ] CCIT and transport simulation aligned to final configuration.
+        CTD Map:
+          - Summaries in P.3.5; programs in P.3.3; CCIT in P.2/P.7; deviations/CAPA in P.3.5.
+      EU (EMA):
+        Guidance Summary:
+          - APS scope aligned to EU expectations; cover worst-case; ensure personnel qualification and EM trending.
+
+Potency:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Build a multi-attribute potency matrix (activation, cytotoxicity, ± cytokines) tied to MoA; trend early, set criteria late.
+        What reviewers look for:
+          - Precision, reference strategy, donor variability plan, and sensitivity/specificity evidence.
+        Checklist:
+          - [ ] Define MoA and link readouts.
+          - [ ] System suitability and guardrails.
+          - [ ] RR→Spec and validation path.
+        CTD Map:
+          - S/P.4.1–4.3 (methods/results), P.5.6 (justification), S/P.2.6 (lifecycle).
+      EU (EMA):
+        Guidance Summary:
+          - Multi-attribute potency aligned to MoA; phase-appropriate criteria; maintain cross-site consistency.
+
+Comparability:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Risk-based analytical matrix (identity, purity/impurities, potency, safety) with predefined decision rules; scale with phase/impact.
+        What reviewers look for:
+          - Equivalence logic, clinical relevance, and traceability to specs; bridging plans.
+        Checklist:
+          - [ ] Define matrix/acceptance ahead of change.
+          - [ ] Pre/post lots and equivalence statistics.
+          - [ ] Predefine “fail → action” rules.
+        CTD Map:
+          - Rationale in S/P.2.7; data cross-ref to S/P.4.* and P.5.*.
+      EU (EMA):
+        Guidance Summary:
+          - Similar matrix-based approach; align acceptance and decision rules with EU guidance.
+
+PPQ in BLA:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Include DS/DP validation summaries (S.2.5/P.3.5), PPQ protocols/reports with predefined acceptance, deviations handling, and linkages to control strategy/specs.
+        What reviewers look for:
+          - Commercial configuration; sampling plans and statistical rationales.
+        Checklist:
+          - [ ] Final process version; qualified/validated methods.
+          - [ ] PPQ acceptance; deviation/CAPA logic.
+          - [ ] Integrated validation summary with CTD cross-refs.
+      EU (EMA):
+        Guidance Summary:
+          - Provide validation summaries and PPQ evidence aligned to MAA; ensure cross-references and consistency.
+
+PPQ Timing:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Run PPQ when process/analytics are locked and sites ready; align timing with filing strategy.
+        What reviewers look for:
+          - Predefined acceptance, deviation handling, configuration matching commercial.
+        Checklist:
+          - [ ] Process lock; analytics ready; site readiness confirmed.
+          - [ ] Materials, sampling plans, and equipment at commercial state.
+      EU (EMA):
+        Guidance Summary:
+          - Similar expectations; ensure timing supports dossier and launch plans.
+
+PPQ Timing (LVV DS):
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Run LVV DS PPQ when process/analytics are locked and sites aligned; synchronize with DP so vector PPQ lots feed DP PPQ.
+        What reviewers look for:
+          - Protocols, predefined acceptance, deviation handling, and alignment to DP control strategy.
+        Checklist:
+          - [ ] LVV process/version lock; critical materials fixed.
+          - [ ] Methods qualified/validated; references/standards secured.
+          - [ ] Sampling plans support DP CQAs; change control aligned.
+      EU (EMA):
+        Guidance Summary:
+          - Coordinate PPQ timing with DP needs; ensure method lifecycle and site readiness.
+
+Specification Justification:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Specs derive from variability, capability, stability, and clinical relevance; keep phase-appropriate and consistent with validation outcomes.
+        What reviewers look for:
+          - Data-backed thresholds and clinical justification; cross-references to validation and stability.
+        Checklist:
+          - [ ] Capability/trending summaries; stability link; clinical rationale.
+          - [ ] Consistency across sites/lots; coherent CTD tables.
+      EU (EMA):
+        Guidance Summary:
+          - Similar principles; ensure dossier consistency and phase appropriateness.
+
+Stability:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Build shelf-life from phase-appropriate matrices/time points; justify storage/shipping/hold limits; trend results.
+        What reviewers look for:
+          - Coherence with specs and method lifecycle; transport simulation evidence for cryo handling.
+      EU (EMA):
+        Guidance Summary:
+          - Similar expectations; ensure justification aligns with EU assessment practices.
+
+CCIT/Shipping:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Select CCIT methods suited to container/closure; qualify cryo shipping configurations.
+        What reviewers look for:
+          - Mapping/orientation studies; leak limit rationale; requalification triggers.
+      EU (EMA):
+        Guidance Summary:
+          - Align CCIT and shipping validation to final configuration; document requalification strategy.
+
+Module 3 Mapping:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Map DS to 3.2.S and DP to 3.2.P; process validation in S.2.5/P.3.5; keep terminology consistent.
+        What reviewers look for:
+          - Clear cross-references; consistent terms across S/P sections.
+      EU (EMA):
+        Guidance Summary:
+          - Same CTD approach; ensure MAA section mapping and consistency.
+
+CRL Insights:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Public themes include potency justification gaps, insufficient APS scope, unclear comparability decision rules, PPQ readiness concerns, and CTD inconsistencies.
+        Suggested next steps:
+          - Tighten potency rationale with MoA linkage and multi-attribute support; finalize APS acceptance and requalification; predefine comparability rules; confirm PPQ readiness; improve CTD cross-references.
+      EU (EMA):
+        Guidance Summary:
+          - Similar themes observed in EU assessment reports and feedback; ensure dossier alignment and validation evidence appropriate for region.
