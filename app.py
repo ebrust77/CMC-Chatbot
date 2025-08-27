@@ -1,8 +1,10 @@
 
 import streamlit as st
-import yaml, re, json
+import yaml, re, json, os
 from pathlib import Path
 from datetime import datetime
+
+APP_VERSION = "3.7.3"
 
 st.set_page_config(page_title="Regulatory CMC Chatbot — Cell Therapy", page_icon="📄", layout="wide")
 
@@ -27,38 +29,140 @@ STYLE = load_yaml(STYLE_PATH, {
              "prefer_terms":["phase-appropriate","data-driven","MoA-linked"]}
 })
 
+# --- Hard fallbacks so you always get content ---
+FALLBACKS = {
+    "Report Results": {
+        "Guidance Summary": [
+            "Use report-only (RR) for characterization/non-disposition tests; apply acceptance criteria to disposition-critical assays.",
+            "Define objective triggers to convert RR→Spec (e.g., consecutive lots, qualification, capability, stability, clinical exposure)."
+        ],
+        "Suggested next steps": [
+            "Build an RR→Spec matrix (assay, current status, trigger, target phase).",
+            "Ensure CoA wording and Module 3 language are consistent with RR vs criteria."
+        ]
+    },
+    "Aseptic Process Validation (APV)": {
+        "Guidance Summary": [
+            "Media fills should reflect worst-case duration and key interventions; qualify personnel and trend EM.",
+            "Align CCIT and shipping validation to the final container/shipper."
+        ],
+        "Checklist": [
+            "[ ] List interventions (planned/unplanned).",
+            "[ ] Match simulation duration to max batch time and include shift change."
+        ],
+        "Suggested next steps": [
+            "Draft APS protocols with predefined acceptance; define requalification triggers."
+        ]
+    },
+    "Potency": {
+        "Guidance Summary": [
+            "Use a MoA-linked, multi-attribute potency matrix (activation, cytotoxicity, ± cytokines).",
+            "Trend in early phase, introduce criteria as data mature."
+        ],
+        "Suggested next steps": [
+            "Define controls, system suitability, and guardrails; outline RR→Spec and validation path."
+        ]
+    },
+    "Comparability": {
+        "Guidance Summary": [
+            "Use a risk-based analytical matrix with predefined decision rules; scale to phase and impact."
+        ],
+        "Suggested next steps": [
+            "Predefine acceptance/decision logic; capture pre/post lots and statistics; document outcomes in CTD."
+        ]
+    },
+    "PPQ in BLA": {
+        "Guidance Summary": [
+            "Include DS/DP validation summaries (S.2.5/P.3.5), PPQ protocols/reports, predefined acceptance, deviations handling, and linkages to specs/control strategy."
+        ],
+        "Suggested next steps": [
+            "Prepare an integrated validation summary and ensure CTD cross-references are consistent."
+        ]
+    },
+    "PPQ Timing": {
+        "Guidance Summary": [
+            "Run PPQ when process/analytics are locked and sites are ready; align timing with filing strategy."
+        ],
+        "Suggested next steps": [
+            "Confirm process version, analytics readiness, and commercial configuration; finalize PPQ protocols/acceptance."
+        ]
+    },
+    "PPQ Timing (LVV DS)": {
+        "Guidance Summary": [
+            "Synchronize LVV DS PPQ with DP needs so vector PPQ lots support DP PPQ."
+        ],
+        "Suggested next steps": [
+            "Lock process and methods; align sampling with DP CQAs; reserve PPQ lots for downstream needs."
+        ]
+    },
+    "Specification Justification": {
+        "Guidance Summary": [
+            "Specs derive from variability, capability, stability, and clinical relevance; phase-appropriate and consistent with validation outcomes."
+        ],
+        "Suggested next steps": [
+            "Document capability/trending; link to stability and clinical evidence; ensure CTD tables are coherent."
+        ]
+    },
+    "Stability": {
+        "Guidance Summary": [
+            "Build shelf-life from phase-appropriate matrices/time points; justify storage/shipping/hold limits; trend results."
+        ],
+        "Suggested next steps": [
+            "Expand matrices as risk dictates; ensure transport simulation supports cryo handling."
+        ]
+    },
+    "CCIT/Shipping": {
+        "Guidance Summary": [
+            "Choose CCIT methods suited to container/closure; qualify cryo shipping configurations and mapping/orientation."
+        ],
+        "Suggested next steps": [
+            "Define leak limits and requalification triggers; place summaries and cross-refs in CTD."
+        ]
+    },
+    "Module 3 Mapping": {
+        "Guidance Summary": [
+            "Map DS to 3.2.S and DP to 3.2.P; process validation in S.2.5/P.3.5; keep terminology consistent."
+        ],
+        "Suggested next steps": [
+            "Maintain a living outline and ensure cross-references are consistent across sections."
+        ]
+    },
+    "CRL Insights": {
+        "Guidance Summary": [
+            "Common themes: potency justification, APS scope, comparability after changes, PPQ readiness, and CTD consistency."
+        ],
+        "Suggested next steps": [
+            "Tighten potency rationale, finalize APS scope/acceptance, predefine comparability rules, and confirm PPQ readiness."
+        ]
+    }
+}
+
 def format_for_display(text: str, style: str = "Bulleted", simplify: bool = True,
                        bullets_max: int = 7, words_per_bullet_max: int = 24) -> str:
-    text = text.replace("\\n", "\n")
-    text = re.sub(r"(?m)^\s*•\s+", "- ", text)  # normalize bullets
+    text = text.replace("\n", "\n")
+    text = re.sub(r"(?m)^\s*•\s+", "- ", text)
     if simplify:
         text = re.sub(r"(?m)^###\s+(.*)$", r"**\1**", text)
         text = re.sub(r"(?m)^####\s+(.*)$", r"**\1**", text)
         text = re.sub(r"\n{3,}", "\n\n", text)
     if style == "Bulleted":
-        out, section_count = [], 0
-        prev_was_bullet = False
+        out, section_count, prev_was_bullet = [], 0, False
         for ln in text.splitlines():
             s = ln.strip()
-            if re.match(r"^\*\*.+\*\*$", s):  # header
+            if re.match(r"^\*\*.+\*\*$", s):
                 if prev_was_bullet and out and out[-1] != "":
                     out.append("")
-                out.append(s)
-                prev_was_bullet = False
-                section_count = 0
-            elif s.startswith(("-", "*")):    # bullet
+                out.append(s); prev_was_bullet = False; section_count = 0
+            elif s.startswith(("-", "*")):
                 words = s.lstrip("-* ").split()
                 out.append("- " + " ".join(words[:words_per_bullet_max]))
-                prev_was_bullet = True
-                section_count += 1
+                prev_was_bullet = True; section_count += 1
                 if section_count >= bullets_max:
-                    out.append("")
-                    section_count = 0
-            elif s:                            # paragraph
+                    out.append(""); section_count = 0
+            elif s:
                 if prev_was_bullet and out and out[-1] != "":
                     out.append("")
-                out.append(s)
-                prev_was_bullet = False
+                out.append(s); prev_was_bullet = False
         return "\n".join(out).strip()
     else:
         text = re.sub(r"(?m)^\s*-\s+", "• ", text)
@@ -66,7 +170,6 @@ def format_for_display(text: str, style: str = "Bulleted", simplify: bool = True
         text = re.sub(r"(?m)^#{1,6}\s*", "", text)
         return text.strip()
 
-# --- KB resolution helpers ---
 def _any_region_block(dct, product, stage):
     try:
         region_map = dct[product][stage]
@@ -81,8 +184,7 @@ def _any_region_block(dct, product, stage):
     return {}, None
 
 def get_block_with_trace(intent, product, stage, region):
-    d = KB.get(intent, {})
-    trace = []
+    d = KB.get(intent, {}); trace = []
     try:
         blk = d[product][stage][region]; trace.append(f"{product}/{stage}/{region} (exact)"); return blk, " > ".join(trace)
     except Exception: pass; trace.append(f"{product}/{stage}/{region} (miss)")
@@ -106,8 +208,7 @@ def merge_blocks(blocks):
     merged = {}
     for b in blocks:
         for sec, items in (b or {}).items():
-            if not isinstance(items, list):
-                continue
+            if not isinstance(items, list): continue
             merged.setdefault(sec, [])
             seen = set(merged[sec])
             for it in items:
@@ -131,23 +232,28 @@ def render_answer(intent, product, stage, region, detail="Medium"):
         ("General", "General", "US (FDA)"),
         ("General", "General", "EU (EMA)"),
     ]
-    if detail == "Short":
-        keys = keys[:4]
-    elif detail == "Medium":
-        keys = keys[:8]
+    if detail == "Short": keys = keys[:4]
+    elif detail == "Medium": keys = keys[:8]
+
     for (p,s,r) in keys:
         blk, tr = get_block_with_trace(intent, p, s, r)
-        if blk:
-            sources.append(blk); traces.append(tr)
+        if blk: sources.append(blk); traces.append(tr)
+
     if not sources:
-        return "_No KB block found. Try another stage or update kb/guidance.yaml._", "debug: no-match"
-    merged = merge_blocks(sources)
+        fb = FALLBACKS.get(intent, FALLBACKS["Report Results"])
+        merged = fb
+        trace = "fallback: HARD_DEFAULT for intent"
+    else:
+        merged = merge_blocks(sources)
+        trace = " | ".join(traces)
+
     if detail == "Short":
         sections = ["Guidance Summary","Suggested next steps"]
     elif detail == "Medium":
         sections = ["Guidance Summary","What reviewers look for","Suggested next steps"]
     else:
         sections = ["Guidance Summary","What reviewers look for","Common pitfalls","Checklist","CTD Map","Examples","Suggested next steps"]
+
     lines, any_content = [], False
     for sec in sections:
         if sec in merged and merged[sec]:
@@ -156,8 +262,16 @@ def render_answer(intent, product, stage, region, detail="Medium"):
             for b in merged[sec]:
                 lines.append(f"- {b}")
             any_content = True
+
     if not any_content:
-        return "_No KB block found. Try another stage or update kb/guidance.yaml._", "debug: empty-sections"
+        for sec, items in merged.items():
+            if items:
+                lines.append(f"**{sec}**")
+                for b in items: lines.append(f"- {b}")
+                any_content = True
+        if not any_content:
+            return "_No KB block found and no fallback content._", "debug: empty"
+
     REGION_NOTES = {
         "US (FDA)": ["- Consider INTERACT/Type C and pre-BLA timing.", "- Keep CTD mapping consistent across 3.2.S/3.2.P (e.g., S.2.5/P.3.5 for process validation)."],
         "EU (EMA)": ["- Consider Scientific Advice timeline; ensure MAA section mapping.", "- Align with EU expectations for aseptic processing and PV reporting."]
@@ -167,14 +281,38 @@ def render_answer(intent, product, stage, region, detail="Medium"):
         lines.append("")
         lines.append(f"**Region notes ({region})**")
         lines.extend(notes)
-    return "\n".join(lines).strip(), " | ".join(traces)
+
+    return "\n".join(lines).strip(), trace
 
 # --- UI ---
+st.markdown(f"**Regulatory CMC Chatbot — Cell Therapy**  \\ **Version:** {APP_VERSION}")
+
+# KB Health Check
+with st.expander("KB Health Check"):
+    exists = KB_PATH.exists()
+    st.write(f"KB path: {KB_PATH}")
+    st.write(f"Exists: {exists}  |  Size: {KB_PATH.stat().st_size if exists else 0} bytes")
+    intents = list(KB.keys()) if isinstance(KB, dict) else []
+    st.write("Intents found:", intents)
+    quick = ["Report Results","Aseptic Process Validation (APV)","Potency","Comparability","PPQ in BLA","PPQ Timing","PPQ Timing (LVV DS)","Specification Justification","Stability","CCIT/Shipping","Module 3 Mapping","CRL Insights"]
+    st.write("Quick starters present:", [q for q in quick if q in intents])
+    if st.button("Run self-test (typical combos)"):
+        combos = [
+            ("Report Results","Cell Therapy","Phase 1","US (FDA)"),
+            ("Aseptic Process Validation (APV)","Cell Therapy","Phase 3 (Registrational)","US (FDA)"),
+            ("Potency","Cell Therapy","Phase 2","EU (EMA)"),
+        ]
+        res = []
+        for intent_name, product_name, stage_name, region_name in combos:
+            txt, tr = render_answer(intent_name, product_name, stage_name, region_name, detail="Medium")
+            res.append({"intent": intent_name, "product": product_name, "stage": stage_name, "region": region_name, "ok": "_No KB block found" not in txt, "trace": tr[:160]})
+        st.json(res)
+
 with st.sidebar:
     st.subheader("Inputs")
     product = st.selectbox("Product", ["Cell Therapy","LVV (Vector RM)"])
     stage = st.selectbox("Stage", ["Phase 1","Phase 2","Phase 3 (Registrational)","Commercial"])
-    region = st.selectbox("Region", ["US (FDA)","EU (EMA)"])  # Global removed
+    region = st.selectbox("Region", ["US (FDA)","EU (EMA)"])
 
     st.subheader("Display")
     disp_format = st.radio("Format", ["Bulleted","Plain"], horizontal=True, index=0)
@@ -209,10 +347,8 @@ with st.sidebar:
             "CRL Insights": "From public FDA CRLs, what CMC themes affect cell therapy approvals?"
         }.get(qs, "")
 
-st.title("Regulatory CMC Chatbot — Cell Therapy (focus)")
-st.caption("Detail level changes content depth; regions: US (FDA) and EU (EMA). Not regulatory or legal advice.")
-
-q = st.text_area("Ask a question", key="q", placeholder="Try Deep mode + 'Report Results' or 'APV' to see richer output.", height=120)
+st.title("Ask a question")
+q = st.text_area("Question", key="q", placeholder="Try Deep mode + 'Report Results' or 'APV' to see richer output.", height=120)
 
 with st.expander("Suggest a shorter answer (optional)"):
     user_rewrite = st.text_area("Your rewrite", height=120)
@@ -236,8 +372,8 @@ if st.button("Answer"):
     }
     intent = qs
     for k, keys in possible.items():
-        if any(kx in ql for kx in keys):
-            intent = k; break
+        if any(kx in ql for kx in keys): intent = k; break
+
     raw, trace = render_answer(intent, product, stage, region, detail=detail)
     clean = format_for_display(raw, style=disp_format, simplify=simplify,
                                bullets_max=bullets_max, words_per_bullet_max=words_max)
@@ -251,15 +387,3 @@ if st.button("Answer"):
             })+"\n")
     st.markdown(clean)
     st.caption(f"KB Debug: {trace}")
-
-# --- Downloads: Regulatory CMC Templates ---
-st.markdown("### Regulatory CMC Templates (Downloads)")
-files = sorted((TEMPLATES_DIR).glob("*.*"))
-if not files:
-    st.caption("No template files found.")
-for p in files:
-    try:
-        with open(p, "rb") as f:
-            st.download_button(label=f"Download {p.name}", data=f.read(), file_name=p.name)
-    except Exception as e:
-        st.caption(f"Missing: {p.name}")
