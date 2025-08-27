@@ -3,11 +3,121 @@ CRL Insights:
     General:
       US (FDA):
         Guidance Summary:
-          - Public CRL themes include potency, APS, comparability, PPQ, CTD consistency.
+          - Public CRLs commonly cite potency rationale gaps, APS scope/acceptance, unclear comparability rules, PPQ readiness evidence, and CTD inconsistencies.
+        What reviewers look for:
+          - MoA-linked potency matrix with data-driven criteria and system suitability.
+          - APS covering worst-case duration and interventions; personnel qualification; EM trending.
+          - Predefined comparability rules with statistics and margins.
+          - PPQ readiness evidence (capability, control charts, deviations/CAPA outcomes).
+          - Clean CTD cross-references across 3.2.S/3.2.P.
+        Common pitfalls:
+          - Single cytokine presented as 'potency' without MoA linkage.
+          - APS shorter than commercial duration or missing key interventions.
+          - Comparability plan without predefined pass/fail and actions.
+          - PPQ evidence scattered across modules; unclear link to specs.
         Suggested next steps:
-          - Strengthen potency rationale; finalize APS; define decision rules; confirm PPQ; align CTD.
+          - Tighten potency rationale; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD.
       EU (EMA):
         Guidance Summary:
-          - EMA feedback similar; ensure validation narratives and CTD mapping fit MAA.
+          - EMA feedback echoes FDA themes with emphasis on validation evidence and consistent CTD mapping into MAA.
         Suggested next steps:
-          - Plan Scientific Advice; finalize EU mapping and terminology.
+          - Plan Scientific Advice; ensure EU terminology/mapping; align validation narratives to MAA structure.
+
+Stability:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Phase-appropriate matrices/time points; justify storage/shipping/hold; align method lifecycle to stability claims.
+        What reviewers look for:
+          - Trends across potency/viability/ID/purity; alert/spec limits justified; transport/hold simulations; expiry rationale linked to data.
+        Checklist:
+          - Matrix table (DP/DS/intermediates), conditions, time points, attributes.
+          - Trend plots and predefined action on trend breaks.
+        CTD Map:
+          - P.8.1 protocols; P.8.2 summary; links to P.5 specs and P.5.3 methods.
+        Suggested next steps:
+          - Lock matrix and limits; add shipping simulations; tie expiry to data trends.
+      EU (EMA):
+        Guidance Summary:
+          - Similar expectations; ensure format/terminology matches MAA; include DP shipping evidence.
+        Suggested next steps:
+          - Crosswalk CTD mapping to EU; confirm transport/hold studies coverage.
+
+Comparability:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Risk-based analytical matrix with predefined decision rules; scale to phase and impact.
+        What reviewers look for:
+          - Pre/post lots with equivalence statistics; orthogonal potency measures; predefined fail→action rules.
+        Common pitfalls:
+          - Post-hoc rules; inadequate lot numbers; no linkage to specs or stability.
+        CTD Map:
+          - S/P.2.7 protocol/plan; S/P.4 data; P.5.6 spec justification; cross-ref to changes.
+        Suggested next steps:
+          - Freeze decision tree, sample size, margins; simulate outcomes; map to CTD.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent with FDA; emphasize predefined rules and statistical justification.
+        Suggested next steps:
+          - Confirm EU-acceptable statistics/margins and mapping to MAA.
+
+Aseptic Process Validation (APV):
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - APS mirrors worst-case duration/interventions; personnel qualification; EM trending; CCIT aligned to final configuration.
+        Checklist:
+          - Interventions list; max duration; shift change; replenishments/connections; acceptance criteria and requalification triggers.
+        CTD Map:
+          - P.3.3 manufacturing description; P.3.5 APS protocols/reports; P.2/CCIT cross-refs.
+        Examples:
+          - Three APS runs covering max duration + shift change; 0 positives; intervention set includes aseptic connections/replenishments.
+        Suggested next steps:
+          - Finalize intervention list; document airflow visualization; define requalification cadence.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent expectations; ensure APS rationale matches EU standards for aseptic simulations.
+        Suggested next steps:
+          - Align acceptance and personnel qualification narrative with EU expectations.
+
+PPQ in BLA:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Include DS/DP validation summaries, PPQ protocols/reports, predefined acceptance, deviation handling, and links to control strategy/specs.
+        What reviewers look for:
+          - Sampling plan rationale, state of control evidence, deviations/CAPA outcomes, and clear linkage to specifications and release readiness.
+        CTD Map:
+          - S.2.5 / P.3.5 validation & PPQ; P.5.6 spec justification; cross-links to control strategy.
+        Examples:
+          - PPQ summary table with runs, key parameters, acceptance status, and deviations/CAPA outcomes.
+        Suggested next steps:
+          - Assemble integrated validation summary; ensure cross-refs are consistent and searchable.
+      EU (EMA):
+        Guidance Summary:
+          - Keep PPQ narratives consistent with MAA structure; ensure validation evidence is cohesive.
+        Suggested next steps:
+          - Crosswalk BLA→MAA mapping early; fill any EU-specific gaps.
+
+Potency:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - MoA-linked multi-attribute panel; trend early; set criteria later; define guardrails and reference strategy.
+        What reviewers look for:
+          - Assay lifecycle (qualification→validation), system suitability, reference control strategy, and MoA linkage to clinical response.
+        Common pitfalls:
+          - Over-reliance on single cytokine; no guardrails; high variability without controls.
+        Suggested next steps:
+          - Document RR→Spec triggers; define validation plan; add orthogonal potency measures; establish reference strategy and control charts.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent with FDA; ensure validation level and potency narrative fit EU expectations.
+        Suggested next steps:
+          - Harmonize acceptance rationale and lifecycle documents for MAA.

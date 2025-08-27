@@ -3,7 +3,7 @@ import streamlit as st
 import yaml, re
 from pathlib import Path
 
-APP_VERSION = "3.8.4"
+APP_VERSION = "3.8.5"
 st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
 
 BASE_DIR = Path(__file__).parent
@@ -18,150 +18,31 @@ def load_yaml(path: Path, fallback: dict):
     except Exception:
         return fallback
 
-# === Built-in robust KB so app always returns useful content ===
 SAMPLE_KB = {
-  "CRL Insights": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "Public CRLs commonly cite: potency justification gaps, APS scope/acceptance, unclear comparability rules, PPQ readiness evidence, CTD inconsistencies."
-      ],
-      "What reviewers look for": [
-        "MoA-linked potency matrix with data-driven criteria and system suitability.",
-        "APS representing worst-case duration and interventions; personnel qualification and EM trending.",
-        "Predefined comparability rules with statistical methods and margins.",
-        "PPQ readiness: capability, control charts, sampling plan, deviations/CAPA outcomes.",
-        "Clean CTD cross-references across 3.2.S/3.2.P sections."
-      ],
-      "Common pitfalls": [
-        "Calling single cytokine readouts 'potency' without MoA linkage.",
-        "APS runs shorter than commercial duration or missing key interventions.",
-        "Comparability plan without predefined pass/fail and actions.",
-        "PPQ evidence scattered across modules; unclear acceptance linkage to specs."
-      ],
-      "Suggested next steps": [
-        "Tighten potency rationale and guardrails; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD mapping."
-      ],
-      "Deep: Reviewer questions": [
-        "Show data linking potency endpoint(s) to clinical MoA and exposure.",
-        "How does APS mimic worst case and what requalification triggers are defined?",
-        "Where are capability summaries and how do they inform specs?"
-      ],
-      "Deep: Evidence pointers": [
-        "Capability (Cp/Cpk) and control charts; APS protocol/report outcomes; comparability statistics with margins; PPQ summary tables."
-      ]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": [
-        "EMA feedback echoes FDA themes with emphasis on validation evidence and consistent CTD mapping into MAA."
-      ],
-      "Suggested next steps": [
-        "Plan Scientific Advice early; ensure EU terminology/mapping and validation narratives match MAA expectations."
-      ]
+    "CRL Insights": {
+        "Cell Therapy": {
+            "General": {
+                "US (FDA)": {
+                    "Guidance Summary": [
+                        "Public CRLs highlight potency rationale gaps, APS scope, comparability rules, PPQ readiness, CTD inconsistencies."
+                    ],
+                    "Suggested next steps": [
+                        "Tighten MoA-linked potency; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD."
+                    ]
+                }
+            }
+        }
     }
-  }}}},
-  "Stability": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "Phase-appropriate matrices/time points; justify storage/shipping/hold; align method lifecycle to stability claims."
-      ],
-      "What reviewers look for": [
-        "Trends across potency/viability/ID/purity; alert/spec limits justified; transport/hold simulations; expiry rationale linked to data."
-      ],
-      "Checklist": [
-        "Matrix table (DP/DS/intermediates), conditions, time points, attributes.",
-        "Trend plots and pre-defined action on trend breaks."
-      ],
-      "CTD Map": ["P.8.1 protocols; P.8.2 summary; links to P.5 specs and P.5.3 methods."],
-      "Suggested next steps": ["Lock matrix and limits; add shipping simulations; tie expiry to data trends."]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": ["As above; align with MAA format and EU expectations for stability justifications."],
-      "Suggested next steps": ["Ensure EU mapping and terminology; include DP shipping/transport evidence."]
-    }
-  }}}},
-  "Comparability": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "Risk-based analytical matrix with predefined decision rules; scale to phase and impact."
-      ],
-      "What reviewers look for": [
-        "Pre/post lots with equivalence statistics; orthogonal potency measures; predefined fail→action rules."
-      ],
-      "Common pitfalls": ["Post-hoc rules; inadequate lot numbers; no linkage to specs or stability."],
-      "CTD Map": ["S/P.2.7 protocol/plan; S/P.4 data; P.5.6 spec justification; cross-ref to changes."],
-      "Suggested next steps": ["Freeze decision tree, sample size, margins; simulate outcomes; map to CTD."]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": ["Similar to FDA; emphasize predefined rules and statistical justification."],
-      "Suggested next steps": ["Confirm EU-acceptable statistics/margins and mapping to MAA."]
-    }
-  }}}},
-  "Aseptic Process Validation (APV)": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "APS mirrors worst-case duration/interventions; qualify personnel; trend EM; align CCIT to final configuration."
-      ],
-      "Checklist": [
-        "Interventions list; max duration; shift change; replenishments/connections; acceptance criteria and requalification triggers."
-      ],
-      "CTD Map": ["P.3.3 manufacturing description; P.3.5 APS protocols/reports; P.2/CCIT cross-refs."],
-      "Examples": [
-        "Three APS runs covering max duration + shift change; 0 positives; intervention set includes aseptic connections/replenishments."
-      ],
-      "Suggested next steps": ["Finalize intervention list; document airflow visualization; define requalification cadence."]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": ["Convergent expectations; ensure APS rationale matches EU standards for aseptic simulations."],
-      "Suggested next steps": ["Align acceptance and personnel qualification narrative with EU expectations."]
-    }
-  }}}},
-  "PPQ in BLA": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "Include DS/DP validation summaries, PPQ protocols/reports, predefined acceptance, deviation handling, and link to control strategy/specs."
-      ],
-      "What reviewers look for": [
-        "Sampling plan rationale, state of control evidence, deviations/CAPA outcomes, and clear linkage to specifications and release readiness."
-      ],
-      "CTD Map": ["S.2.5 / P.3.5 validation & PPQ; P.5.6 spec justification; cross-links to control strategy."],
-      "Examples": ["PPQ summary table with runs, key parameters, acceptance status, and deviations/CAPA outcomes."],
-      "Suggested next steps": ["Assemble integrated validation summary; ensure cross-refs are consistent and searchable."]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": ["Keep PPQ narratives consistent with MAA structure; ensure validation evidence is cohesive."],
-      "Suggested next steps": ["Crosswalk BLA→MAA mapping early; fill any EU-specific gaps."]
-    }
-  }}}},
-  "Potency": {"Cell Therapy": {"General": {
-    "US (FDA)": {
-      "Guidance Summary": [
-        "MoA-linked multi-attribute panel; trend early; set criteria later; define guardrails and reference strategy."
-      ],
-      "What reviewers look for": [
-        "Assay lifecycle (qualification→validation), system suitability, reference control strategy, and MoA linkage to clinical response."
-      ],
-      "Common pitfalls": ["Over-reliance on single cytokine; no guardrails; high variability without controls."],
-      "Suggested next steps": [
-        "Document RR→Spec triggers; define validation plan; add orthogonal potency measures; establish reference strategy and control charts."
-      ],
-      "Deep: Reviewer questions": [
-        "How does potency readout track with clinical MoA?",
-        "What acceptance criteria are justified by capability and clinical data?"
-      ],
-      "Deep: Evidence pointers": [
-        "Guardrail tables, control charts, variability analyses, and cross-references to P.5.3/P.5.6."
-      ]
-    },
-    "EU (EMA)": {
-      "Guidance Summary": ["Convergent with FDA; ensure validation level and potency narrative fit EU expectations."],
-      "Suggested next steps": ["Harmonize acceptance rationale and lifecycle documents for MAA."]
-    }
-  }}}}
 }
 
 KB = load_yaml(KB_PATH, {})
 if not isinstance(KB, dict) or not KB:
     KB = SAMPLE_KB
+
+STYLE = load_yaml(STYLE_PATH, {
+    "display": {"format": "Bulleted", "bullets_max": 7, "words_per_bullet_max": 24},
+    "tone": {"voice":"concise, plain language, active voice"}
+})
 
 DEEP_PREFIX = "Deep:"
 
@@ -212,21 +93,21 @@ def merge_blocks(blocks):
     return merged
 
 def simplify_text(text: str) -> str:
-    text = re.sub(r"\([^)]{15,}\)", "", text)  # drop long parentheticals
+    text = re.sub(r"\([^)]{15,}\)", "", text)
     text = re.sub(r"\s{2,}", " ", text)
     return text.strip()
 
 def format_for_display(text: str, bullets_max: int = 7, words_per_bullet_max: int = 24) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    text = re.sub(r"(?m)^\s*•\s+", "- ", text)   # bullets to dash
-    text = re.sub(r"(?m)^###\s+(.*)$", r"**\1**", text)  # '###' to bold section headers
+    text = re.sub(r"(?m)^\s*•\s+", "- ", text)
+    text = re.sub(r"(?m)^###\s+(.*)$", r"**\1**", text)
     text = re.sub(r"(?m)^####\s+(.*)$", r"**\1**", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
-    text = simplify_text(text)  # simplify ON
+    text = simplify_text(text)
     out, section_count, prev_was_bullet = [], 0, False
     for ln in text.splitlines():
         s = ln.strip()
-        if re.match(r"^\*\*.+\*\*$", s):  # section header
+        if re.match(r"^\*\*.+\*\*$", s):
             if prev_was_bullet and out and out[-1] != "":
                 out.append("")
             out.append(s); prev_was_bullet = False; section_count = 0
@@ -295,10 +176,10 @@ FALLBACKS = {
 
 def render_answer(intent, product, stage, region, detail="Medium"):
     if detail == "Short":
-        key_sets = [[(product, stage, region)]]  # exact only
+        key_sets = [[(product, stage, region)]]
     elif detail == "Medium":
         key_sets = [[(product, stage, region), (product, stage, "US (FDA)"), (product, "General", region)]]
-    else:  # Deep
+    else:
         key_sets = [[
             (product, stage, region),
             (product, stage, "US (FDA)"),
@@ -359,7 +240,6 @@ def render_answer(intent, product, stage, region, detail="Medium"):
         return "_No KB block found and no fallback content._", "debug: empty"
     return "\n".join(lines).strip(), trace
 
-# --- UI ---
 st.markdown(f"**CMC Chatbot**  \\ **Version:** {APP_VERSION}")
 
 with st.sidebar:
@@ -386,7 +266,6 @@ with st.sidebar:
             "Potency": "How should we build a phase-appropriate potency matrix for cell therapy?"
         }.get(qs, "")
 
-# KB health indicator
 st.sidebar.caption(f"KB loaded: {len(KB) if isinstance(KB, dict) else 0} topics  •  file: kb/guidance.yaml")
 
 st.title("Ask a question")
@@ -427,7 +306,6 @@ if st.button("Answer"):
     st.markdown(clean)
     st.caption(f"Intent: {intent}  |  Detail: {detail}  |  KB topics loaded: {len(KB) if isinstance(KB, dict) else 0}  |  KB Debug: {trace}")
 
-# Downloads
 st.markdown("### Regulatory CMC Templates (Downloads)")
 files = sorted((TEMPLATES_DIR).glob("*.*"))
 if not files:
