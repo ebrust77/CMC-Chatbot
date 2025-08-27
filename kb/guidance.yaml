@@ -1,0 +1,120 @@
+Report Results:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Use report-only (RR) for characterization/non-disposition tests; apply acceptance criteria to disposition-critical assays (identity, sterility, mycoplasma, endotoxin, where applicable potency).
+          - Define explicit triggers to convert RR→Spec (e.g., ≥10–20 consecutive lots, method qualification, capability ≥ Cpk 1.33, stability evidence, clinical exposure milestones).
+        What reviewers look for:
+          - A one-page RR→Spec matrix listing assay, phase status, trigger, and target phase for criteria; alignment to batch disposition practice and CoA.
+          - CTD text that is consistent (S/P sections) and avoids implying criteria where none exist.
+        Common pitfalls:
+          - Treating a CQA-critical assay as RR without a time-bound conversion plan; inconsistency between Module 3 and actual release decisions.
+        Checklist:
+          - [ ] Identify disposition-critical assays vs characterization.
+          - [ ] Define numeric triggers for RR→Spec.
+          - [ ] Ensure CoA language matches Module 3.
+          - [ ] Plan bridging if the readout/platform changes.
+        CTD Map:
+          - Place specification rationale in S.4.5/P.5.6; methods in S.4.2/P.5.2; validation/qualification in S.4.3/P.5.3; summarize lifecycle in S/P.2.6–2.7.
+        Examples:
+          - Example RR→Spec row: Potency (cytotoxicity), Phase 1 = RR; Trigger = ≥12 conformance lots + method qualification + trend stability ≥ 6 months; Target = Phase 2 criteria.
+          - Example language (Module 3): “The following readouts are reported without predefined acceptance criteria in Phase 1; acceptance thresholds will be introduced by Phase 2 based on capability and clinical experience.”
+Aseptic Process Validation (APV):
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Demonstrate aseptic assurance via APS/media fills reflecting worst-case duration, interventions, and shift changes; qualify personnel; trend EM; align CCIT to final container/shipper.
+        What reviewers look for:
+          - APS protocols with predefined acceptance (units filled, incubation, turbidity thresholds), documented interventions, and smoke studies showing unidirectional flow.
+        Common pitfalls:
+          - Omitting high-risk interventions (e.g., aseptic connections, stopper/vial manipulations); APS duration shorter than commercial batch time.
+        Checklist:
+          - [ ] List planned & unplanned interventions; include worst-case.
+          - [ ] Match APS duration to max batch time; include shift change.
+          - [ ] Qualify all operators and key equipment; trend EM.
+          - [ ] Align CCIT and transport simulation to final configuration.
+        CTD Map:
+          - Summarize APS in P.3.5; personnel/EM programs in P.3.3; CCIT in P.2/P.7; deviations/CAPA referenced in P.3.5.
+        Examples:
+          - Example APS acceptance: 3 simulations × ≥5,000 units each, 14-day incubation at 20–25°C then 30–35°C; 0 positives; interventions list includes aseptic connections, equipment adjustments, component replenishment.
+CRL Insights:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Themes: potency matrix justification, APS coverage of worst-case interventions, clarity of specs vs validation/stability, PPQ readiness, and CTD consistency.
+        What reviewers look for:
+          - MoA-linkage for potency; APS evidence and CAPA closeout; defined comparability rules; PPQ protocols with predefined acceptance; cross-referenced CTD.
+        Checklist:
+          - [ ] Potency has orthogonal readouts tied to MoA.
+          - [ ] APS covers worst-case with zero positives across simulations.
+          - [ ] Specs align to validation/capability and are frozen before PPQ.
+          - [ ] PPQ materials/sites/config identical to commercial.
+        Examples:
+          - Example CRL theme: “Provide justification for potency acceptance criteria or plan to introduce by Phase 2 with capability evidence.”
+Comparability:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Use a risk-based analytical matrix (identity, purity/impurities, potency, safety) with predefined decision rules; scale with phase/impact.
+        What reviewers look for:
+          - Equivalence/acceptance logic, clinical relevance rationale, and traceability to specs; bridging plans if changes affect methods or process.
+        Checklist:
+          - [ ] Define matrix/acceptance ahead of change.
+          - [ ] Capture pre/post lots and equivalence stats.
+          - [ ] Predefine “fail → action” rules (additional lots, spiking, clinical assessment).
+        CTD Map:
+          - Place rationale in S/P.2.7; data summaries cross-referenced to S/P.4.* and P.5.*.
+        Examples:
+          - Example acceptance: no meaningful shift in potency and impurity profiles vs historical ranges; justify clinically.
+PPQ in BLA:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Include DS/DP validation summaries (S.2.5/P.3.5), PPQ protocols/reports with predefined acceptance, deviations handling, and linkages to control strategy/specs.
+        What reviewers look for:
+          - Site/material configuration matches commercial; sampling plans and statistical rationales.
+        Checklist:
+          - [ ] Final process version; qualified/validated methods.
+          - [ ] Predefined PPQ acceptance; deviation/CAPA logic.
+          - [ ] Integrated validation summary with CTD cross-refs.
+        CTD Map:
+          - Validation summaries in S.2.5/P.3.5; specs P.5.1; methods P.5.2; validation P.5.3; justification P.5.6; lifecycle in S/P.2.6–2.7.
+        Examples:
+          - Example PPQ acceptance: all critical parameters within ranges; CQAs within spec across 3 consecutive lots; no unexplained OOS/OOT; all deviations closed.
+PPQ Timing (LVV DS):
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Run LVV DS PPQ when process/analytics are locked and sites aligned; synchronize with DP needs so vector PPQ lots feed DP PPQ.
+        What reviewers look for:
+          - Protocols, predefined acceptance, deviations handling, and alignment to DP control strategy.
+        Checklist:
+          - [ ] LVV process/version lock; critical materials fixed.
+          - [ ] Methods qualified/validated; references/standards secured.
+          - [ ] Sampling plans support DP CQAs; change control aligned.
+        CTD Map:
+          - DS validation S.2.5; methods S.4.2/S.4.3; attributes/specs S.4.1/S.4.5; cross-refs to DP P.5.* where applicable.
+        Examples:
+          - Example timing: complete LVV DS PPQ ≥1–2 months before DP PPQ; reserve PPQ lots for DP engineering/PPQ runs.
+Potency:
+  Cell Therapy:
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Build a multi-attribute potency matrix (activation, cytotoxicity, ± cytokines) tied to MoA; define controls and E:T ranges; trend early, set criteria late.
+        What reviewers look for:
+          - Precision bands, reference standard strategy, donor variability plan, and sensitivity/specificity evidence.
+        Checklist:
+          - [ ] Define MoA and link readouts.
+          - [ ] Set system suitability and guardrails.
+          - [ ] Plan RR→Spec and validation path.
+        CTD Map:
+          - Summaries in S/P.4.1–4.3; rationale in S/P.4.5 or P.5.6; lifecycle in S/P.2.6.
+        Examples:
+          - Example E:T matrix: 1:1, 5:1, 10:1 with predefined acceptance logic evolving by phase.
