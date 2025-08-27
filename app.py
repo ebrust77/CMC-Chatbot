@@ -1,27 +1,35 @@
 
 import streamlit as st
-import yaml, re
+import yaml, re, os
 from pathlib import Path
 
-APP_VERSION = "3.8.8"
+APP_VERSION = "3.8.9"
 st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
 
-BASE_DIR = Path(__file__).parent
+BASE_DIR = Path(__file__).parent.resolve()
 KB_PATH = BASE_DIR / "kb" / "guidance.yaml"
 
-def load_yaml(path: Path, fallback: dict):
+def load_yaml_debug(path: Path):
+    meta = {"exists": path.exists(), "path": str(path), "size": None, "error": None}
+    if meta["exists"]:
+        try:
+            meta["size"] = path.stat().st_size
+        except Exception as e:
+            meta["error"] = f"stat() failed: {e!r}"
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            return yaml.safe_load(f) or fallback
-    except Exception:
-        return fallback
+        if meta["exists"]:
+            with open(path, "r", encoding="utf-8") as f:
+                data = yaml.safe_load(f) or {}
+        else:
+            data = {}
+    except Exception as e:
+        meta["error"] = f"YAML parse error: {e}"
+        data = {}
+    return data, meta
 
-SAMPLE_KB = {}  # intentionally empty; rely on YAML now
-KB = load_yaml(KB_PATH, {})
-if not isinstance(KB, dict) or not KB:
-    KB = {
-        "Potency": {"Cell Therapy": {"General": {"US (FDA)": {"Guidance Summary": ["No KB block found."]}}}}
-    }
+KB, kb_meta = load_yaml_debug(KB_PATH)
+if not isinstance(KB, dict):
+    KB = {}
 
 DEEP_PREFIX = "Deep:"
 
@@ -148,7 +156,8 @@ def render_answer(intent, product, stage, region, detail="Medium"):
     md = "\n".join(out_lines).strip()
     return format_for_display(md), trace
 
-st.markdown(f"**CMC Chatbot**  \\ **Version:** {APP_VERSION}")
+# --- UI ---
+st.markdown("**CMC Chatbot**  \\ **Version:** " + APP_VERSION)
 
 with st.sidebar:
     st.subheader("Inputs")
@@ -174,7 +183,9 @@ with st.sidebar:
             "Potency": "How should we build a phase-appropriate potency matrix for cell therapy?"
         }.get(qs, "")
 
-st.sidebar.caption(f"KB loaded: {len(KB) if isinstance(KB, dict) else 0} topics  •  file: kb/guidance.yaml")
+    st.subheader("KB status")
+    st.code(f"Path: {kb_meta['path']}\nExists: {kb_meta['exists']}  Size: {kb_meta['size']}\nError: {kb_meta['error']}")
+    st.caption("Topics loaded: " + str(len(KB)) + "  •  Top-level keys: " + ", ".join(list(KB.keys())[:10]))
 
 st.title("Ask a question")
 q = st.text_area("Question", key="q", placeholder="Try Deep mode + 'Potency' to see Deep-only extras.", height=120)
@@ -202,4 +213,4 @@ if st.button("Answer"):
 
     raw, trace = render_answer(intent, product, stage, region, detail=detail)
     st.markdown(raw)
-    st.caption(f"Intent: {intent}  |  Detail: {detail}  |  KB topics loaded: {len(KB) if isinstance(KB, dict) else 0}  |  KB Debug: {trace}")
+    st.caption("Intent: " + intent + "  |  Detail: " + detail + "  |  KB Debug: " + trace)
