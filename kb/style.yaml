@@ -2,3 +2,5 @@ display:
   format: Bulleted
   bullets_max: 7
   words_per_bullet_max: 24
+tone:
+  voice: concise, plain language, active voice
