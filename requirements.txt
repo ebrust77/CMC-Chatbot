@@ -1,2 +1,2 @@
-streamlit>=1.30,<2
+streamlit>=1.29,<2
 PyYAML>=6.0

@@ -2,166 +2,91 @@
 import streamlit as st
 import yaml, re
 from pathlib import Path
-from collections import defaultdict
 
-APP_VERSION = "3.10.1"
-st.set_page_config(page_title="CMC Chatbot", page_icon="📄", layout="wide")
+st.set_page_config(page_title="FDA Cell Therapy CMC Bot", page_icon="🧪", layout="wide")
 
 BASE_DIR = Path(__file__).parent.resolve()
 KB_PATH = BASE_DIR / "kb" / "guidance.yaml"
 
-def load_yaml_debug(path: Path):
-    meta = {"exists": path.exists(), "path": str(path), "size": None, "error": None}
-    data = {}
-    if meta["exists"]:
-        try:
-            meta["size"] = path.stat().st_size
-            with open(path, "r", encoding="utf-8") as f:
-                data = yaml.safe_load(f) or {}
-        except Exception as e:
-            meta["error"] = f"YAML parse error: {e}"
-            data = {}
-    return data, meta
-
-KB, kb_meta = load_yaml_debug(KB_PATH)
-if not isinstance(KB, dict):
-    KB = {}
-
-DEEP_PREFIX = "Deep:"
-REGIONS = ("US (FDA)", "EU (EMA)")
-
-def _any_region_block(dct, product, stage):
+@st.cache_data(show_spinner=False)
+def load_kb():
     try:
-        region_map = dct[product][stage]
-        if isinstance(region_map, dict) and region_map:
-            for pref in REGIONS:
-                if pref in region_map:
-                    return region_map[pref]
-            first_key = next(iter(region_map.keys()))
-            return region_map[first_key]
-    except Exception:
-        pass
-    return {}
+        with open(KB_PATH, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f) or {}
+        return data
+    except Exception as e:
+        return {"__error__": str(e)}
 
-def get_region_block(intent, product, stage, region):
-    d = KB.get(intent, {})
-    try:
-        return d[product][stage][region]
-    except Exception:
-        pass
-    blk = _any_region_block(d, product, stage)
-    if blk:
-        return blk
-    try:
-        return d[product]["General"][region]
-    except Exception:
-        pass
-    blk = _any_region_block(d, product, "General")
-    if blk:
-        return blk
-    try:
-        return d["General"][stage][region]
-    except Exception:
-        pass
-    blk = _any_region_block(d, "General", stage)
-    if blk:
-        return blk
-    blk = _any_region_block(d, "General", "General")
-    return blk or {}
+KB = load_kb()
 
-def merge_lists_unique(dst, src):
-    seen = set(dst)
-    for x in src:
-        if x not in seen:
-            dst.append(x)
-            seen.add(x)
-    return dst
+def normalize(s):
+    return re.sub(r"[^a-z0-9]+"," ", (s or "").lower()).strip()
 
-def collect_by_region(intent, product, stage, regions):
-    region_sections = {}
-    for r in regions:
-        blk = get_region_block(intent, product, stage, r)
-        if not isinstance(blk, dict) or not blk:
+TOPICS = {
+    "Stability requirements": ["stability","expiry","shelf life","hold","shipping","post thaw","transport"],
+    "Shipper validation": ["shipper","shipping validation","package","iq oq pq","thermal","ln2","dry ice","payload"],
+    "Number of lots in batch analysis": ["batch analysis","spec justification","number of lots","n of lots","ctd 3.2","tables"],
+    "APS / Aseptic Process Validation": ["apv","aps","media fill","aseptic","process simulation","personnel qualification","em"],
+    "Potency matrix (phase-appropriate)": ["potency","bioassay","cytotoxic","activation","moa","reference standard","guardrail"],
+    "Comparability — decision rules": ["comparability","bridge","post-change","equivalence","pre post"],
+    "PPQ readiness & BLA content": ["ppq","process performance qualification","validation summary","state of control","p.3.5"],
+    "Release specifications (phase-appropriate)": ["specification","specs","acceptance criteria","p.5.1","p.5.6"]
+}
+
+def route_topic(question, pick):
+    if pick and pick in TOPICS:
+        return pick
+    qn = normalize(question or "")
+    for topic, keys in TOPICS.items():
+        if any(k in qn for k in keys):
+            return topic
+    return pick or "Stability requirements"
+
+def render_answer(topic):
+    try:
+        blk = KB["Topics"][topic]["Cell Therapy"]["US (FDA)"]
+    except Exception:
+        return "### Guidance Summary\n\n- No KB content found for this topic."
+    order = ["Summary", "What FDA expects", "Checklist", "CTD map", "Common pitfalls", "Reviewer questions", "Example language", "References"]
+    out = []
+    for sec in order:
+        items = blk.get(sec, [])
+        if not items: 
             continue
-        merged = {}
-        for sec, items in blk.items():
-            if isinstance(items, list):
-                merged.setdefault(sec, [])
-                merge_lists_unique(merged[sec], items)
-        if merged:
-            region_sections[r] = merged
-    return region_sections
-
-def simplify_text_preserve_newlines(text: str) -> str:
-    text = re.sub(r"\([^)]{200,}\)", "", text)   # drop only huge parentheticals
-    text = re.sub(r"[ ]{2,}", " ", text)         # collapse spaces, not newlines
-    text = "\n".join(ln.rstrip() for ln in text.splitlines())
-    return text.strip()
-
-def render_answer(intent, product, stage, detail="Medium"):
-    region_sections = collect_by_region(intent, product, stage, REGIONS)
-    if not region_sections:
-        return "### Guidance Summary\n\n- No KB block found.\n\n### Suggested next steps\n\n- Add content to kb/guidance.yaml."
-
-    if detail == "Short":
-        sections = ["Guidance Summary","Suggested next steps"]; bullets_max = 3; words_max = 18
-    elif detail == "Medium":
-        sections = ["Guidance Summary","What reviewers look for","Suggested next steps"]; bullets_max = 6; words_max = 24
-    else:
-        sections = ["Guidance Summary","What reviewers look for","Common pitfalls","Checklist","CTD Map","Examples","Suggested next steps"]
-        deep_keys = set()
-        for merged in region_sections.values():
-            for k in merged.keys():
-                if isinstance(k, str) and k.startswith(DEEP_PREFIX):
-                    deep_keys.add(k)
-        sections += sorted(deep_keys); bullets_max = 12; words_max = 40
-
-    out = [f"**CMC Chatbot**  \\\\ **Version:** {APP_VERSION}"]
-    out.append(f"_Product: {product} • Stage: {stage}_")
-    for sec in sections:
-        any_region_has = any(sec in merged and merged[sec] for merged in region_sections.values())
-        if not any_region_has:
-            continue
-        title = sec if not sec.startswith(DEEP_PREFIX) else sec.replace(DEEP_PREFIX,"").strip()
+        out.append(f"### {sec}")
+        for it in items:
+            if isinstance(it, str):
+                if not it.startswith("- "): it = "- " + it
+                out.append(it)
         out.append("")
-        out.append(f"### {title}")
-        out.append("")
-        for r in REGIONS:
-            merged = region_sections.get(r, {})
-            items = merged.get(sec, [])
-            if not items:
-                continue
-            out.append(f"**{r}**")
-            for b in items[:bullets_max]:
-                words = b.split()
-                trimmed = " ".join(words[:words_max])
-                if not trimmed.startswith("- "):
-                    trimmed = "- " + trimmed
-                out.append(trimmed)
-            out.append("")
+    return "\n".join(out).strip()
 
-    md = "\n".join(out).strip()
-    return simplify_text_preserve_newlines(md)
+st.title("FDA Cell Therapy CMC Bot — US Only")
+st.caption("Focused answers sourced from public FDA guidance/themes. Informational only — not legal advice.")
 
-# --- UI ---
-with st.sidebar:
-    st.subheader("Inputs")
-    product = st.selectbox("Product", ["Cell Therapy","LVV (Vector RM)"])
-    stage = st.selectbox("Stage", ["Phase 1","Phase 2","Phase 3 (Registrational)","Commercial"])
-    detail = st.radio("Detail", ["Short","Medium","Deep"], horizontal=True, index=2)
+col1, col2 = st.columns([2,1])
+with col2:
+    st.subheader("Quick prompts")
+    pick = st.radio("Topic", list(TOPICS.keys()), index=0)
+    examples = {
+        "Stability requirements": "What stability is expected for cryopreserved cell therapy in Phase 3, including shipping and post-thaw hold?",
+        "Shipper validation": "How do we validate a cryogenic LN2 shipper for commercial distribution? What evidence does FDA expect?",
+        "Number of lots in batch analysis": "How many lots should be included in batch analysis tables to justify specifications in a BLA?",
+        "APS / Aseptic Process Validation": "What should our APS cover for commercial readiness and how is acceptance defined?",
+        "Potency matrix (phase-appropriate)": "How should we structure a potency matrix for CAR-T from Phase 1 to BLA?",
+        "Comparability — decision rules": "What does a defensible comparability plan look like for a post-scale-up change?",
+        "PPQ readiness & BLA content": "What PPQ elements must be included in the BLA narrative and how do we show state of control?",
+        "Release specifications (phase-appropriate)": "How do we set phase-appropriate specifications and justify them at BLA?",
+    }
+    if st.button("Insert example"):
+        st.session_state["q"] = examples.get(pick, "")
 
-    st.subheader("Topic")
-    intent = st.selectbox("Quick Starter", [
-        "CRL Insights","Stability","Comparability","Aseptic Process Validation (APV)","PPQ in BLA","Potency"
-    ])
+with col1:
+    q = st.text_area("Ask your question", key="q", height=140, placeholder="Type your question or use a quick prompt →")
+    topic = route_topic(q, pick)
+    if st.button("Answer", type="primary", use_container_width=True):
+        md = render_answer(topic)
+        st.markdown(md)
 
-    st.subheader("KB status")
-    st.code(f"Path: {kb_meta['path']}\nExists: {kb_meta['exists']}  Size: {kb_meta.get('size')}\nError: {kb_meta.get('error')}")
-    st.caption("Topics loaded: " + str(len(KB)) + "  •  Top-level keys: " + ", ".join(list(KB.keys())[:10]))
-
-st.title("Ask a question")
-q = st.text_area("Question (optional)", key="q", height=100, placeholder="e.g., What should our APS cover and how is acceptance set?")
-
-if st.button("Answer"):
-    md = render_answer(intent, product, stage, detail=detail)
-    st.markdown(md)
+with st.expander("KB status"):
+    st.write({"loaded": bool(KB), "path": str(KB_PATH), "topics": list(KB.get("Topics", {}).keys())})
