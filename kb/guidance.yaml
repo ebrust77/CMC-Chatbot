@@ -3,76 +3,707 @@ CRL Insights:
     General:
       US (FDA):
         Guidance Summary:
-          - Public CRLs commonly cite potency rationale gaps, APS scope/acceptance, unclear comparability rules, PPQ readiness evidence, and CTD inconsistencies.
+          - Public CRLs cite potency rationale gaps, APS scope, comparability rules, PPQ readiness, and CTD inconsistencies.
         Suggested next steps:
-          - Tighten potency rationale; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD.
+          - Tighten MoA-linked potency; finalize APS acceptance; codify comparability rules; verify PPQ readiness; harmonize CTD.
       EU (EMA):
         Guidance Summary:
-          - EMA feedback echoes FDA themes; ensure validation evidence and CTD mapping into MAA.
+          - Themes mirror FDA; ensure validation evidence and consistent MAA mapping.
         Suggested next steps:
-          - Plan Scientific Advice; align terminology/mapping; ensure validation narratives match MAA.
+          - Plan Scientific Advice; align terminology and cross-references to EU CTD.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Feasibility and trending; provisional acceptance; justify sampling.
+        What reviewers look for:
+          - Rationale for early potency/ID/purity; hold/shipping simulations; APS planning.
+        Suggested next steps:
+          - Trend lots; set guardrails; outline APS scope for Phase 2.
+      EU (EMA):
+        Guidance Summary:
+          - Similar to FDA with risk alignment.
+        Suggested next steps:
+          - Seek early Scientific Advice on potency and APS scope.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Expand analytics; partial validations; robust comparability.
+        What reviewers look for:
+          - Capability summaries; decision rules; interim acceptance tied to data.
+        Suggested next steps:
+          - Lock decision trees; size/margins; update APS design.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent; ensure CTD consistency.
+        Suggested next steps:
+          - Map evidence to EU CTD; align terminology.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Validation near complete; PPQ readiness and control strategy coherence.
+        What reviewers look for:
+          - Equivalence statistics; capability/control charts; APS reports; spec justification.
+        Common pitfalls:
+          - Post‑hoc rule changes; fragmented CTD cross‑refs.
+        Suggested next steps:
+          - Finalize validations, PPQ plans, CTD mapping; close CAPAs.
+      EU (EMA):
+        Guidance Summary:
+          - Same themes; ensure MAA harmonization.
+        Suggested next steps:
+          - Align BLA↔MAA crosswalk; avoid terminology drift.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - CPV and lifecycle maintenance; comparability for changes.
+        Suggested next steps:
+          - Run CPV; maintain change control; periodic reporting readiness.
+      EU (EMA):
+        Guidance Summary:
+          - Align with EU PV expectations; post‑approval change consistency.
+        Suggested next steps:
+          - Keep EU change mapping current.
+
 Stability:
   Cell Therapy:
     General:
       US (FDA):
         Guidance Summary:
-          - Phase-appropriate matrices/time points; justify storage/shipping/hold; align method lifecycle to stability claims.
+          - Phase‑appropriate matrices/time points; justify storage/shipping/hold; align method lifecycle.
+        Checklist:
+          - Matrix table (DP/DS/intermediates), conditions, time points, attributes.
+          - Trend plots and predefined actions on trend breaks.
         Suggested next steps:
-          - Lock matrix/limits; add shipping simulations; tie expiry to data trends.
+          - Lock matrix/limits; add shipping simulations; tie expiry to trends.
       EU (EMA):
         Guidance Summary:
-          - Similar expectations; ensure MAA mapping; include DP shipping evidence.
+          - Similar expectations; ensure MAA mapping; include DP shipping.
         Suggested next steps:
-          - Crosswalk CTD mapping to EU; confirm transport/hold studies.
+          - Crosswalk CTD to EU; confirm transport/hold coverage.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Minimal but justified matrix; feasibility and hold/shipping simulations.
+        Suggested next steps:
+          - Start trending potency/viability; set temporary expiry with rationale.
+      EU (EMA):
+        Guidance Summary:
+          - Similar; justify conditions and transport scenarios.
+        Suggested next steps:
+          - Document worst‑case transport and analytical readiness.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Expand matrix/time points; begin establishing expiry from trends.
+        Suggested next steps:
+          - Add intermediates; increase time points; predefine actions for trend breaks.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent; align to EU sections.
+        Suggested next steps:
+          - Harmonize presentation to EU CTD.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Near‑final expiry; full shipping/hold simulations; validation alignment.
+        Suggested next steps:
+          - Lock expiry claim; include confirmatory data; ensure CTD cross‑links.
+      EU (EMA):
+        Guidance Summary:
+          - As US; ensure MAA wording alignment.
+        Suggested next steps:
+          - Avoid terminology drift.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Ongoing stability commitments and change‑management support.
+        Suggested next steps:
+          - Maintain annual commitments; update expiry with post‑approval data.
+      EU (EMA):
+        Guidance Summary:
+          - Similar to FDA; align EU commitments.
+        Suggested next steps:
+          - Keep EU commitments synchronized.
+
 Comparability:
   Cell Therapy:
     General:
       US (FDA):
         Guidance Summary:
-          - Risk-based analytical matrix with predefined decision rules; scale to phase and impact.
+          - Risk‑based analytical matrix with predefined decision rules.
         Suggested next steps:
           - Freeze decision tree, lot counts, margins; simulate outcomes; map to CTD.
       EU (EMA):
         Guidance Summary:
-          - Convergent with FDA; emphasize predefined rules and statistical justification.
+          - Convergent; emphasize predefined rules/statistics.
         Suggested next steps:
-          - Confirm EU-acceptable statistics/margins; align mapping to MAA.
+          - Confirm EU‑acceptable statistics/margins; align mapping to MAA.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Descriptive comparisons; feasibility and safety impact.
+        Suggested next steps:
+          - Outline future decision rules; gather baseline variability.
+      EU (EMA):
+        Guidance Summary:
+          - Similar; keep risk lens explicit.
+        Suggested next steps:
+          - Seek advice where uncertainty is high.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Begin formal equivalence statistics; orthogonal potency included.
+        Suggested next steps:
+          - Power/sample‑size planning; set interim margins.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent; justify statistics/margins.
+        Suggested next steps:
+          - Align to EU expectations.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Full equivalence framework; decision rules finalized.
+        Suggested next steps:
+          - Execute protocol; predefine fail→action; ensure CTD clarity.
+      EU (EMA):
+        Guidance Summary:
+          - As US; ensure MAA mapping is consistent.
+        Suggested next steps:
+          - Harmonize presentation.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Lifecycle comparability for CPV‑monitored changes.
+        Suggested next steps:
+          - Maintain decision rules; integrate CPV data.
+      EU (EMA):
+        Guidance Summary:
+          - Similar; maintain EU post‑approval mapping.
+        Suggested next steps:
+          - Keep EU crosswalk current.
+
 Aseptic Process Validation (APV):
   Cell Therapy:
     General:
       US (FDA):
         Guidance Summary:
-          - APS mirrors worst-case duration/interventions; personnel qualification; EM trending; CCIT aligned to final configuration.
+          - APS mirrors worst‑case duration/interventions; personnel qualification; EM trending; CCIT aligned.
+        Checklist:
+          - Interventions list; max duration; shift change; replenishments; acceptance criteria; requalification triggers.
         Suggested next steps:
-          - Finalize intervention list; set acceptance; define requalification cadence; include airflow visualization.
+          - Finalize intervention list; airflow visualization; define requalification cadence.
       EU (EMA):
         Guidance Summary:
-          - Convergent expectations; ensure APS rationale matches EU aseptic simulation standards.
+          - Convergent expectations; match EU aseptic simulation standards.
         Suggested next steps:
-          - Align acceptance and personnel qualification with EU expectations.
+          - Align acceptance and personnel qualification narrative.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - APS planning; may execute shortened/representative runs.
+        Suggested next steps:
+          - Define intervention list/acceptance; schedule full APS later.
+      EU (EMA):
+        Guidance Summary:
+          - Similar to FDA.
+        Suggested next steps:
+          - Confirm EU expectations early.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Execute APS close to final process; refine acceptance.
+        Suggested next steps:
+          - Include worst‑case duration and key interventions.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Ensure MAA‑aligned documentation.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Final APS reports aligned with commercial configuration.
+        Suggested next steps:
+          - Provide full reports and EM trending; tie to control strategy.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Keep EU terminology aligned.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Requalification cadence; CPV integration.
+        Suggested next steps:
+          - Maintain personnel qualification and EM trending.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU mapping current.
+
 PPQ in BLA:
   Cell Therapy:
     General:
       US (FDA):
         Guidance Summary:
-          - Include DS/DP validation summaries, PPQ protocols/reports, predefined acceptance, deviation handling, and links to control strategy/specs.
+          - Include DS/DP validation & PPQ summaries; predefined acceptance; deviation handling; links to control strategy/specs.
         Suggested next steps:
-          - Assemble integrated validation summary; ensure CTD cross-references are consistent.
+          - Assemble integrated validation summary; ensure CTD cross‑refs consistent.
       EU (EMA):
         Guidance Summary:
-          - Keep PPQ narratives consistent with MAA structure; ensure validation evidence is cohesive.
+          - Keep PPQ narratives consistent with MAA; cohesive validation evidence.
         Suggested next steps:
-          - Crosswalk BLA→MAA mapping; fill EU-specific gaps.
+          - Crosswalk BLA→MAA mapping.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - PPQ not required; focus on readiness plan and validation approach.
+        Suggested next steps:
+          - Draft PPQ strategy and sampling logic.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Align early PPQ strategy with EU expectations.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Build capability summaries; align sampling plans.
+        Suggested next steps:
+          - Draft PPQ protocol outline; define acceptance linkage to specs.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Prepare EU mapping early.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Full PPQ protocol and near‑final validation evidence.
+        Suggested next steps:
+          - Provide PPQ sampling plan; capability/control charts; deviation/CAPA plan.
+      EU (EMA):
+        Guidance Summary:
+          - As US; ensure MAA mapping.
+        Suggested next steps:
+          - Harmonize dossier sections.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - PPQ completed; CPV ongoing.
+        Suggested next steps:
+          - Maintain CPV and change control.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU post‑approval mapping.
+
 Potency:
   Cell Therapy:
     General:
       US (FDA):
         Guidance Summary:
-          - MoA-linked multi-attribute panel; trend early; set criteria later; define guardrails and reference strategy.
+          - MoA‑linked multi‑attribute panel; trend early; set criteria later; guardrails and reference strategy.
         Suggested next steps:
-          - Define RR→Spec triggers; add orthogonal potency; establish reference strategy and control charts.
+          - RR→Spec triggers; validation plan; orthogonal potency; reference strategy and control charts.
       EU (EMA):
         Guidance Summary:
-          - Convergent with FDA; ensure validation level and potency narrative fit EU expectations.
+          - Convergent; ensure validation level and potency narrative meet EU expectations.
         Suggested next steps:
-          - Harmonize acceptance rationale and lifecycle documents for MAA.
+          - Harmonize acceptance rationale and lifecycle documents.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Feasibility + trending; exploratory criteria; bootstrap reference strategy.
+        Suggested next steps:
+          - Define guardrails/system suitability; collect baseline variability.
+      EU (EMA):
+        Guidance Summary:
+          - Similar; ensure clinical‑risk linkage.
+        Suggested next steps:
+          - Seek advice on panel composition.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Narrow to MoA‑critical attributes; interim criteria.
+        Suggested next steps:
+          - Capability estimates; refine reference strategy; set equivalence thinking.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent; emphasize method lifecycle.
+        Suggested next steps:
+          - Ensure validation progress matches claims.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Finalize acceptance criteria justified by capability + clinical linkage.
+        Suggested next steps:
+          - Provide control charts; guardrails; validation summaries.
+      EU (EMA):
+        Guidance Summary:
+          - As US; map to MAA.
+        Suggested next steps:
+          - Harmonize terminology/sections.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Lifecycle maintenance; drift monitoring; reference management.
+        Suggested next steps:
+          - CPV integration; periodic re‑assessment.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU alignment.
+
+# LVV (Vector RM) — condensed but phase‑specific content
+CRL Insights:
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - CRLs flag gaps in infectivity/titer rationale, APS for aseptic fills, comparability after scale/raw changes, and CTD mapping.
+        Suggested next steps:
+          - Clarify infectivity/titer strategy; confirm APS acceptance; define comparability rules; ensure CTD cross‑refs.
+      EU (EMA):
+        Guidance Summary:
+          - Similar themes with MAA emphasis.
+        Suggested next steps:
+          - Plan Scientific Advice; align mapping.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Feasibility focus; trend infectivity/titer; safety (RCL) readiness.
+        Suggested next steps:
+          - Outline potency surrogates; plan APS scope.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Seek early advice on analytics.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Strengthen analytics (infectivity, genome integrity); interim validations.
+        Suggested next steps:
+          - Decision rules; capability summaries.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Ensure EU CTD mapping.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Validation nearing completion; PPQ readiness at DS/DP vendors.
+        Suggested next steps:
+          - Provide APS/validation summaries; CTD consistency.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Harmonize dossier.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - CPV and lifecycle comparability.
+        Suggested next steps:
+          - Maintain rules; trend infectivity/titer.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Maintain EU change mapping.
+
+Stability:
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Cryo stability + thaw/hold; shipping excursions; infectivity decay characterization.
+        Suggested next steps:
+          - Lock matrix and transport simulations.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Align MAA wording.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Minimal trending; feasibility of holds.
+        Suggested next steps:
+          - Start decay tracking.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Confirm shipping worst‑cases.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Expand time points; interim expiry.
+        Suggested next steps:
+          - Add orthogonal attributes.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Map to EU sections.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Near‑final expiry; validation alignment.
+        Suggested next steps:
+          - Provide confirmatory data.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Harmonize with MAA.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Ongoing commitments.
+        Suggested next steps:
+          - Update expiry with CPV.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU alignment.
+
+Comparability:
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Risk‑based matrix; infectivity/titer, genome integrity; predefined rules.
+        Suggested next steps:
+          - Freeze margins; simulate outcomes.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Confirm EU‑acceptable stats.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Descriptive comparisons.
+        Suggested next steps:
+          - Baseline variability.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Advice as needed.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Begin formal stats.
+        Suggested next steps:
+          - Power/sample‑size.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Align to EU expectations.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Full equivalence.
+        Suggested next steps:
+          - Execute protocol; predefine actions.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Harmonize presentation.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Lifecycle changes under CPV.
+        Suggested next steps:
+          - Maintain rules; integrate CPV.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Maintain EU crosswalk.
+
+Aseptic Process Validation (APV):
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - APS for aseptic fills/operations; personnel qualification; EM trending; CCIT.
+        Suggested next steps:
+          - Finalize intervention list; acceptance; requalification cadence.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Align EU narrative.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Planning.
+        Suggested next steps:
+          - Define scope/acceptance.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Confirm expectations.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Execute near‑final config.
+        Suggested next steps:
+          - Cover worst‑case interventions/duration.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Ensure mapping.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Final APS reports.
+        Suggested next steps:
+          - Provide EM/APS/CCIT evidence.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Keep MAA aligned.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Requalification + CPV.
+        Suggested next steps:
+          - Maintain cadence.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU mapping current.
+
+PPQ in BLA:
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - DS/DP validation; PPQ summaries; predefined acceptance; deviations; control strategy link.
+        Suggested next steps:
+          - Integrated validation summary; consistent cross‑refs.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent with MAA structure.
+        Suggested next steps:
+          - Crosswalk BLA→MAA.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Not required; plan readiness.
+        Suggested next steps:
+          - Draft strategy.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Align expectations.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Capability summaries; sampling alignment.
+        Suggested next steps:
+          - Outline PPQ protocol.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Prepare EU mapping.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Full PPQ protocol and validation evidence.
+        Suggested next steps:
+          - Provide sampling plan; deviations/CAPA approach.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Harmonize dossier.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Completed; CPV ongoing.
+        Suggested next steps:
+          - Maintain CPV and change control.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Keep EU post‑approval mapping.
+
+Potency:
+  LVV (Vector RM):
+    General:
+      US (FDA):
+        Guidance Summary:
+          - Infectivity and titer key; genome integrity; potency surrogates.
+        Suggested next steps:
+          - Guardrails; reference strategy; system suitability.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Align validation to claims.
+    Phase 1:
+      US (FDA):
+        Guidance Summary:
+          - Feasibility + trending; provisional criteria.
+        Suggested next steps:
+          - Baseline variability; orthogonal checks.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Advice on assay set.
+    Phase 2:
+      US (FDA):
+        Guidance Summary:
+          - Interim acceptance; capability estimates.
+        Suggested next steps:
+          - Refine reference strategy.
+      EU (EMA):
+        Guidance Summary:
+          - Convergent.
+        Suggested next steps:
+          - Ensure lifecycle docs.
+    Phase 3 (Registrational):
+      US (FDA):
+        Guidance Summary:
+          - Finalize criteria; link to capability/clinical.
+        Suggested next steps:
+          - Charts + validation summaries.
+      EU (EMA):
+        Guidance Summary:
+          - As US.
+        Suggested next steps:
+          - Harmonize wording.
+    Commercial:
+      US (FDA):
+        Guidance Summary:
+          - Lifecycle maintenance; drift monitoring.
+        Suggested next steps:
+          - CPV integration.
+      EU (EMA):
+        Guidance Summary:
+          - Similar.
+        Suggested next steps:
+          - Maintain EU alignment.
