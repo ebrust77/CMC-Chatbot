@@ -1,6 +1,10 @@
-# FDA Cell Therapy CMC Bot (v1.5, US Only) — With Inspection & CRL Themes
+# FDA Cell Therapy CMC Bot (v1.6, US Only)
 
-Adds **inspection/CRL themes** to the built-in reference corpus (with links to FDA Inspection Observations, Warning Letters, and FOIA Reading Room).
+**Improved open-text answers** — no more generic CRL summary. The app now:
+- Prioritizes **official FDA/ICH/USP guidances** over inspection/CRL themes
+- Uses **MMR** to diversify results (reduces same-answer bias)
+- Applies a **relevance threshold**; if no good match, it clearly says so
+- Shows a small **debug** panel with the top hits & scores
 
 ## Run
 ```bash
@@ -9,6 +13,6 @@ streamlit run app.py
 ```
 
 ## Deploy
-Push to GitHub (ensure `app.py` is at repo root) and deploy on Streamlit Community Cloud.
+Push to GitHub and deploy on Streamlit Cloud (main file: `app.py`).
 
-> Informational only; not legal or regulatory advice. Verify against the latest official documents.
+> Informational only; not legal or regulatory advice. Always verify against the latest official documents.

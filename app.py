@@ -2,13 +2,11 @@
 import streamlit as st
 import yaml, re, json, pickle
 from pathlib import Path
-from typing import List, Dict, Any
 import numpy as np
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-APP_VERSION = "1.5"
+APP_VERSION = "1.6"
 st.set_page_config(page_title="FDA Cell Therapy CMC Bot — US Only", page_icon="🧪", layout="wide")
 
 BASE_DIR = Path(__file__).parent.resolve()
@@ -17,12 +15,12 @@ CORPUS_PATH = BASE_DIR / "corpus" / "refs.json"
 INDEX_PATH = BASE_DIR / "index" / "refs_tfidf.pkl"
 BASE_DIR.joinpath("index").mkdir(parents=True, exist_ok=True)
 
+# ---------- Load KB ----------
 def _parse_yaml(text):
     try:
         return yaml.safe_load(text) or {}
     except Exception:
         return {}
-
 def load_kb():
     if KB_PATH.exists():
         try:
@@ -30,9 +28,9 @@ def load_kb():
         except Exception:
             return {}
     return {}
-
 KB = load_kb()
 
+# ---------- Load corpus & chunk ----------
 def load_corpus():
     try:
         data = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
@@ -40,21 +38,31 @@ def load_corpus():
         for ref in data:
             text = re.sub(r"\s+", " ", ref.get("text","")).strip()
             if not text: continue
+            # split into ~600-char chunks
             sents = re.split(r"(?<=[.!?])\s+", text)
-            chunk, acc = [], []
+            buff, chunks = [], []
             for s in sents:
-                acc.append(s)
-                if sum(len(x) for x in acc) > 600:
-                    chunk.append(" ".join(acc).strip()); acc = []
-            if acc: chunk.append(" ".join(acc).strip())
-            for c in chunk:
+                buff.append(s)
+                if sum(len(x) for x in buff) > 600:
+                    chunks.append(" ".join(buff).strip()); buff = []
+            if buff: chunks.append(" ".join(buff).strip())
+            for c in chunks:
+                weight = 1.0
+                ttl = (ref.get("title","") or "").lower()
+                pub = (ref.get("publisher","") or "").lower()
+                # de-emphasize generic inspection/CRL theme summaries so they don't dominate every query
+                if "inspection" in ttl or "warning" in ttl or "crl" in ttl:
+                    weight = 0.6
+                # boost official guidances by FDA/ICH/USP
+                if any(x in pub for x in ["fda","ich","usp"]):
+                    weight = max(weight, 1.0)
                 docs.append({
                     "title": ref["title"],
                     "url": ref["url"],
                     "publisher": ref["publisher"],
                     "year": ref["year"],
-                    "topics": ref.get("topics", []),
-                    "text": c
+                    "text": c,
+                    "weight": weight
                 })
         return docs
     except Exception:
@@ -62,8 +70,9 @@ def load_corpus():
 
 CORPUS = load_corpus()
 
+# ---------- Build/Load TF-IDF index ----------
 def build_index(docs):
-    vec = TfidfVectorizer(max_features=40000, ngram_range=(1,2))
+    vec = TfidfVectorizer(max_features=50000, ngram_range=(1,2))
     X = vec.fit_transform([d["text"] for d in docs])
     return {"vectorizer": vec, "X": X, "docs": docs}
 
@@ -85,81 +94,112 @@ if INDEX is None and CORPUS:
     INDEX = build_index(CORPUS)
     save_index(INDEX)
 
-def search(query, k=8):
-    if not INDEX: return []
-    qv = INDEX["vectorizer"].transform([query])
-    sims = cosine_similarity(INDEX["X"], qv).ravel()
-    order = np.argsort(sims)[::-1][:k]
-    return [(INDEX["docs"][i], float(sims[i])) for i in order if sims[i] > 0]
+# ---------- Retrieval with guidance-first weighting + MMR ----------
+def initial_scores(index, query):
+    vec = index["vectorizer"]
+    qv = vec.transform([query])
+    sims = cosine_similarity(index["X"], qv).ravel()
+    # apply document weights
+    weights = np.array([d["weight"] for d in index["docs"]])
+    return sims * weights, qv
 
+def mmr_select(index, sims, k=8, lambda_=0.7):
+    X = index["X"]
+    selected = []
+    candidates = list(np.argsort(sims)[::-1][:50])  # consider top 50 for diversity
+    if not candidates:
+        return []
+    selected.append(candidates.pop(0))
+    while len(selected) < min(k, len(candidates)+1):
+        best_i, best_score = None, -1e9
+        for i in candidates:
+            # Max similarity to already selected
+            # (approximate redundancy using cosine on TF-IDF rows)
+            sim_to_sel = 0.0
+            for j in selected:
+                # quick sparse cosine via row dot
+                num = X[i].multiply(X[j]).sum()
+                denom = np.sqrt(X[i].multiply(X[i]).sum()) * np.sqrt(X[j].multiply(X[j]).sum()) + 1e-12
+                sim_to_sel = max(sim_to_sel, float(num/denom))
+            score = lambda_ * sims[i] - (1 - lambda_) * sim_to_sel
+            if score > best_score:
+                best_score, best_i = score, i
+        if best_i is None:
+            break
+        selected.append(best_i)
+        candidates.remove(best_i)
+    return selected
+
+def search(query, k=8):
+    if not INDEX or not query.strip():
+        return []
+    sims, qv = initial_scores(INDEX, query)
+    top_ids = mmr_select(INDEX, sims, k=k, lambda_=0.75)
+    return [(INDEX["docs"][i], float(sims[i])) for i in top_ids]
+
+# ---------- Answer synthesis with "no relevant refs" condition ----------
 def synthesize(query, hits):
+    # Compute a simple confidence: top weighted score and keyword overlap
     if not hits:
-        return "### Answer\n\n- No reference passages matched. Try a different phrasing (e.g., 'media fill interventions and acceptance')."
-    terms = [w for w in re.findall(r"[a-z0-9]+", (query or '').lower()) if len(w) > 2]
-    chosen = []
-    for doc, score in hits:
+        return "### Answer\n\n- No relevant FDA/ICH/USP references were found for that query.", 0.0
+    top_score = max(s for _, s in hits)
+    terms = [w for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) > 2]
+    overlap_hits = 0
+    for doc, s in hits:
+        if any(t in doc["text"].lower() for t in terms):
+            overlap_hits += 1
+    # Thresholds tuned to avoid generic answers:
+    if top_score < 0.02 or overlap_hits < 1:
+        return "### Answer\n\n- No sufficiently relevant FDA/ICH/USP references matched your question. Try rephrasing or narrowing the topic.", float(top_score)
+
+    # Build concise, source-grounded bullets
+    bullets = []
+    for (doc, score) in hits:
         sents = re.split(r"(?<=[.!?])\s+", doc["text"])
         ranked = sorted(sents, key=lambda s: sum(1 for w in terms if w in s.lower()), reverse=True)
-        for s in ranked[:2]:
-            s = s.strip()
-            if s and s not in chosen:
-                chosen.append(s)
-        if len(chosen) >= 10: break
+        take = [s.strip() for s in ranked[:2] if s.strip()]
+        for s in take:
+            if s not in bullets:
+                bullets.append(s)
+        if len(bullets) >= 10:
+            break
+
     md = ["### Answer"]
-    for s in chosen[:10]:
-        if not s.startswith("- "): s = "- " + s
-        md.append(s)
+    for b in bullets[:10]:
+        if not b.startswith("- "): b = "- " + b
+        md.append(b)
     md.append("\n### Sources")
     seen = set()
-    for doc, score in hits[:8]:
+    for (doc, score) in hits[:8]:
         tag = f"{doc['title']} ({doc['publisher']}, {doc['year']})"
         if tag not in seen:
             md.append(f"- [{tag}]({doc['url']})")
             seen.add(tag)
-    return "\n".join(md)
+    return "\n".join(md), float(top_score)
 
-# ---------------- UI -----------------
+# ---------- UI ----------
 st.title("FDA Cell Therapy CMC Bot — US Only (v%s)" % APP_VERSION)
-st.caption("Built-in FDA/ICH references **plus** inspection/CRL themes (links to official FDA pages).")
+st.caption("Open-text questions search **official FDA/ICH/USP references first** (inspection/CRL themes are de‑emphasized).")
 
-tab1, tab2 = st.tabs(["Ask (Official references + themes)", "Quick Starters (KB)"])
-
-with tab1:
-    q = st.text_input("Question", placeholder="e.g., What are FDA expectations for APS design and acceptance in CGT?")
-    if st.button("Answer", type="primary", use_container_width=True):
-        hits = search(q or "")
-        st.markdown(synthesize(q or "", hits))
-
-with tab2:
-    topics = list(KB.get("Topics", {}).keys())
-    pick = st.selectbox("Topic", topics, index=0 if topics else None)
-    if st.button("Answer (KB)"):
-        blk = KB.get("Topics", {}).get(pick, {}).get("Cell Therapy", {}).get("US (FDA)", {})
-        if not blk:
-            st.warning("No KB content for this topic.")
-        else:
-            order = ["Summary", "What FDA expects", "Checklist", "CTD map", "Common pitfalls", "Reviewer questions", "Example language", "References"]
-            out = []
-            for sec in order:
-                items = blk.get(sec, [])
-                if not items: continue
-                title = "Sources" if sec == "References" else sec
-                out.append(f"### {title}")
-                for it in items:
-                    s = str(it)
-                    if sec == "References":
-                        out.append(f"- {s}")
-                    else:
-                        if not s.startswith("- "): s = "- " + s
-                        out.append(s)
-                out.append("")
-            st.markdown("\n".join(out))
+q = st.text_input("Ask any question (US/FDA scope)", placeholder="e.g., What evidence is expected for cryo shipper PQ? How many PPQ lots?")
+if st.button("Answer", type="primary", use_container_width=True):
+    hits = search(q or "")
+    md, conf = synthesize(q or "", hits)
+    st.markdown(md)
+    with st.expander("Why these sources?"):
+        st.write({
+            "top_confidence": conf,
+            "hits": [{
+                "title": d["title"], "publisher": d["publisher"], "year": d["year"], "score": round(s, 4)
+            } for d, s in hits]
+        })
 
 with st.expander("Status / Debug"):
+    idx_present = bool(INDEX)
     st.write({
         "kb_path": str(KB_PATH),
-        "kb_topics": list(KB.get("Topics", {}).keys()),
-        "corpus_entries": len(CORPUS),
-        "index_present": bool(INDEX),
-        "index_size": int(INDEX["X"].shape[0]) if INDEX else 0,
+        "corpus_path": str(CORPUS_PATH),
+        "index_path": str(INDEX_PATH),
+        "index_present": idx_present,
+        "docs_indexed": int(INDEX["X"].shape[0]) if idx_present else 0
     })

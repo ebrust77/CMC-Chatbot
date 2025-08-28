@@ -4,10 +4,6 @@ Topics:
       US (FDA):
         Summary:
           - Common public themes include aseptic validation gaps (duration/interventions), EM trending/alert-action control, airflow visualization, CCIT on final config, incomplete deviation/CAPA, potency/PPQ/comparability linkage.
-        What FDA expects:
-          - Media fills mirroring worst-case with defined acceptance; robust EM with personnel/surface sites and trend review; smoke studies; CCIT; thorough investigations/CAPA; potency linked to MoA; PPQ evidence of control; predefined comparability rules.
-        Checklist:
-          - APS design & acceptance; EM plan; smoke study report; CCIT data; deviation/CAPA system health; potency matrix & validation plan; PPQ protocol/report; comparability protocol with margins.
         References:
           - FDA Inspection Observations — Forms 483 dataset.
           - FDA Warning Letters portal.
