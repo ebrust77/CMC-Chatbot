@@ -22,8 +22,8 @@ Topics:
         Example language:
           - "Expiry is justified by trend analysis of potency and viability through 12 months at −150 °C, with shipping and 4‑hour post‑thaw holds meeting predefined criteria."
         References:
-          - FDA, CMC Information for Human Gene Therapy INDs (2020) — stability sections.
-          - FDA, Manufacturing Considerations for CGT Products (2015).
+          - CMC Information for Human Gene Therapy INDs (2020).
+          - Manufacturing Considerations for CGT Products (2015).
 
   Shipper validation:
     Cell Therapy:
@@ -46,8 +46,8 @@ Topics:
         Example language:
           - "PQ demonstrated ≥120 h within −150 ± 10 °C across 10 probes under summer/winter profiles using worst‑case payload; requalification annually or upon significant change."
         References:
-          - FDA, Guidance on CGT CMC (IND) — shipping/transport considerations.
-          - USP <1079> series (good distribution practices), as applicable.
+          - Manufacturing Considerations for CGT Products (2015).
+          - USP <1079> series.
 
   Number of lots in batch analysis:
     Cell Therapy:
@@ -69,7 +69,8 @@ Topics:
         Example language:
           - "Specification limits are set using pooled clinical and PPQ data (n=XX) with capability evidence; margins reflect clinical and method variability; comparability confirms no shift post‑change."
         References:
-          - ICH Q6B/Q2(R2)/Q14 principles; FDA CGT CMC IND guidance (2020).
+          - ICH Q6B / Q2(R2) / Q14.
+          - CMC Information for Human Gene Therapy INDs (2020).
 
   APS / Aseptic Process Validation:
     Cell Therapy:
@@ -91,7 +92,8 @@ Topics:
         Example language:
           - "Three APS runs covering 12 h with shift change and full intervention set met acceptance (0 positives); personnel requalified semi‑annually; CCIT verified on final configuration."
         References:
-          - FDA, Sterile Drug Products Produced by Aseptic Processing — Guidance for Industry (2004, current).
+          - Sterile Drug Products Produced by Aseptic Processing — Guidance for Industry (2004).
+          - Process Validation — General Principles and Practices (2011).
 
   Potency matrix (phase-appropriate):
     Cell Therapy:
@@ -112,7 +114,8 @@ Topics:
         Example language:
           - "The potency matrix comprises activation and cytotoxic readouts with system suitability and a reference‑managed control chart; acceptance criteria are derived from capability of Phase 3 + PPQ lots."
         References:
-          - FDA CGT CMC IND (2020); ICH Q2(R2)/Q14.
+          - CMC Information for Human Gene Therapy INDs (2020).
+          - ICH Q2(R2) / Q14.
 
   Comparability — decision rules:
     Cell Therapy:
@@ -133,7 +136,8 @@ Topics:
         Example language:
           - "The protocol prespecifies 8 pre/8 post lots with equivalence margins linked to clinical relevance and method variability; outcomes drive predefined actions to specs and process controls."
         References:
-          - ICH Q5E; ICH Q9(R1); FDA CGT CMC IND (2020).
+          - ICH Q5E.
+          - CMC Information for Human Gene Therapy INDs (2020).
 
   PPQ readiness & BLA content:
     Cell Therapy:
@@ -154,7 +158,8 @@ Topics:
         Example language:
           - "PPQ acceptance ties to commercial specs with capability ≥1.33 for potency and viability; deviations resolved with CAPA; control charts attached in the validation summary."
         References:
-          - FDA Process Validation Guidance (2011) — Stages 2/3; FDA CGT CMC IND (2020).
+          - Process Validation — General Principles and Practices (2011).
+          - CMC Information for Human Gene Therapy INDs (2020).
 
   Release specifications (phase-appropriate):
     Cell Therapy:
@@ -174,4 +179,5 @@ Topics:
         Example language:
           - "Acceptance limits for potency and viability are based on pooled clinical and PPQ data with capability analysis; guardrails were retired when validation and clinical correlation were established."
         References:
-          - ICH Q6B; ICH Q2(R2)/Q14; FDA CGT CMC IND (2020).
+          - ICH Q6B.
+          - ICH Q2(R2) / Q14.
