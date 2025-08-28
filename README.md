@@ -1,6 +1,7 @@
-# FDA Cell Therapy CMC Bot (v1.2.1, US Only)
 
-**What's new:** Embedded KB fallback. Even if `kb/guidance.yaml` is missing or malformed, the app uses a built‑in KB so you will never see “No KB found.”
+# FDA Cell Therapy CMC Bot (v1.2.2, US Only)
+
+**What's new:** Robust debug panel, embedded KB fallback, and guaranteed visible output after clicking **Answer**.
 
 ## Run
 ```bash
@@ -9,4 +10,4 @@ streamlit run app.py
 ```
 
 ## Deploy
-Push to GitHub, deploy on Streamlit Cloud (main file: `app.py`). You may still edit `kb/guidance.yaml` — your file will override embedded content; missing sections fall back automatically.
+Push to GitHub and deploy on Streamlit Community Cloud. Set **Main file** to `app.py`.
