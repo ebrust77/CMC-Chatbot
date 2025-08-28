@@ -22,7 +22,7 @@ try:
 except Exception:
     PDF_OK = False
 
-APP_VERSION = "1.3"
+APP_VERSION = "1.3.1"
 st.set_page_config(page_title="FDA Cell Therapy CMC Bot — US Only", page_icon="🧪", layout="wide")
 
 BASE_DIR = Path(__file__).parent.resolve()
@@ -31,48 +31,145 @@ DOCS_DIR = BASE_DIR / "docs"
 INDEX_DIR = BASE_DIR / "index"
 INDEX_PATH = INDEX_DIR / "rag_index.pkl"
 
-# ---------------- KB (unchanged, structured quick answers) -----------------
-_EMBEDDED_KB_YAML = \"\"\"
-Topics:
-  Stability requirements:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - For cryopreserved cell therapies, FDA expects a phase-appropriate stability program covering frozen storage, shipping simulation, and post‑thaw hold; expiry should be data‑justified and linked to key quality attributes.
-        What FDA expects:
-          - Matrix of DS/DP/intermediates × conditions × time points × attributes; include shipping sims and worst‑case post-thaw holds.
-        Checklist:
-          - Define matrix (0,1,3,6,9,12 mo), post‑thaw holds, shipping sim; lock limits; ensure methods fit for purpose.
-        CTD map:
-          - 3.2.P.8.1 / 3.2.P.8.2 with links to 3.2.P.5 and 3.2.P.5.3.
-        References:
-          - CMC Information for Human Gene Therapy INDs (2020).
-  Shipper validation:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - FDA expects package system qualification (IQ/OQ/PQ) with worst‑case payloads and lanes; ongoing control via requalification and monitoring.
-        What FDA expects:
-          - Thermal mapping with calibrated probes; pre‑conditioning; summer/winter extremes; stress profiles.
-        CTD map:
-          - 3.2.P.3.5 (validation) with references in 3.2.P.3.
-        References:
-          - Manufacturing Considerations for CGT Products (2015).
-  Number of lots in batch analysis:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - FDA expects comprehensive batch analysis tables of all available lots to justify specs; lot count is risk‑ and data‑dependent.
-        What FDA expects:
-          - Present pre‑PPQ clinical + PPQ lots with stats; link to capability and control strategy.
-        CTD map:
-          - 3.2.P.5.1 / 3.2.P.5.6 with ties to 3.2.P.3.5.
-        References:
-          - ICH Q6B / Q2(R2) / Q14.
-\"\"\"
+# ---------------- Embedded KB (Python dict, not YAML) -----------------
+EMBEDDED_KB = {
+  "Topics": {
+    "Stability requirements": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "For cryopreserved cell therapies, FDA expects a phase-appropriate stability program covering frozen storage, shipping simulation, and post‑thaw hold; expiry should be data‑justified and linked to key quality attributes."
+          ],
+          "What FDA expects": [
+            "Matrix of DS/DP/intermediates × conditions × time points × attributes; include shipping sims and worst‑case post-thaw holds."
+          ],
+          "Checklist": [
+            "Define matrix (0,1,3,6,9,12 mo), post‑thaw holds, shipping sim; lock limits; ensure methods fit for purpose."
+          ],
+          "CTD map": [
+            "3.2.P.8.1 / 3.2.P.8.2 with links to 3.2.P.5 and 3.2.P.5.3."
+          ],
+          "References": [
+            "CMC Information for Human Gene Therapy INDs (2020)."
+          ]
+        }
+      }
+    },
+    "Shipper validation": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "FDA expects package system qualification (IQ/OQ/PQ) with worst‑case payloads and lanes; ongoing control via requalification and monitoring."
+          ],
+          "What FDA expects": [
+            "Thermal mapping with calibrated probes; pre‑conditioning; summer/winter extremes; stress profiles."
+          ],
+          "CTD map": [
+            "3.2.P.3.5 (validation) with references in 3.2.P.3."
+          ],
+          "References": [
+            "Manufacturing Considerations for CGT Products (2015)."
+          ]
+        }
+      }
+    },
+    "Number of lots in batch analysis": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "FDA expects comprehensive batch analysis tables of all available lots to justify specs; lot count is risk‑ and data‑dependent."
+          ],
+          "What FDA expects": [
+            "Present pre‑PPQ clinical + PPQ lots with stats; link to capability and control strategy."
+          ],
+          "CTD map": [
+            "3.2.P.5.1 / 3.2.P.5.6 with ties to 3.2.P.3.5."
+          ],
+          "References": [
+            "ICH Q6B / Q2(R2) / Q14."
+          ]
+        }
+      }
+    },
+    "APS / Aseptic Process Validation": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "APS (media fills) mirror worst‑case duration & interventions; personnel qualification; EM trending; CCIT alignment."
+          ],
+          "What FDA expects": [
+            "Three successful runs; acceptance 0 positives; airflow visualization; full intervention set."
+          ],
+          "References": [
+            "Sterile Drug Products Produced by Aseptic Processing (2004)."
+          ]
+        }
+      }
+    },
+    "Potency matrix (phase-appropriate)": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "MoA‑linked multi‑attribute potency with guardrails → specs and a defined reference strategy; validation increases by phase."
+          ],
+          "References": [
+            "CMC Information for Human Gene Therapy INDs (2020)."
+          ]
+        }
+      }
+    },
+    "Comparability — decision rules": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "Predefined, risk‑based plan with equivalence statistics and fail→action rules; integrate stability and release."
+          ],
+          "References": [
+            "ICH Q5E."
+          ]
+        }
+      }
+    },
+    "PPQ readiness & BLA content": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "BLA shows PPQ and state of control linking to control strategy/specs; cohesive validation summary."
+          ],
+          "References": [
+            "Process Validation — General Principles and Practices (2011)."
+          ]
+        }
+      }
+    },
+    "Release specifications (phase-appropriate)": {
+      "Cell Therapy": {
+        "US (FDA)": {
+          "Summary": [
+            "RR/guardrails → validated acceptance criteria at BLA; align to MoA and capability."
+          ],
+          "References": [
+            "ICH Q6B; ICH Q2(R2)/Q14."
+          ]
+        }
+      }
+    }
+  }
+}
+
+REF_LINKS = {
+    "CMC Information for Human Gene Therapy INDs": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/chemistry-manufacturing-and-control-cmc-information-human-gene-therapy-investigational",
+    "Manufacturing Considerations for CGT Products": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/manufacturing-considerations-human-cell-tissue-and-cellular-and-gene-therapy-products",
+    "Sterile Drug Products Produced by Aseptic Processing": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/sterile-drug-products-produced-aseptic-processing-current-good-manufacturing-practice",
+    "Process Validation": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/process-validation-general-principles-and-practices",
+    "ICH Q5E": "https://www.ich.org/en/ich-guidelines/quality/q5e",
+    "ICH Q6B": "https://www.ich.org/en/ich-guidelines/quality/q6b",
+    "ICH Q2(R2)": "https://www.ich.org/en/projects/quality-guidelines/q2r2-q14",
+    "ICH Q14": "https://www.ich.org/en/projects/quality-guidelines/q2r2-q14",
+    "USP <1079>": "https://www.usp.org/"
+}
 
 def _parse_yaml(text):
-    import yaml
     try:
         return yaml.safe_load(text) or {}
     except Exception:
@@ -85,23 +182,21 @@ def load_kb():
             disk = _parse_yaml(KB_PATH.read_text(encoding="utf-8"))
         except Exception:
             disk = {}
-    embedded = _parse_yaml(_EMBEDDED_KB_YAML)
-    # overlay disk onto embedded
-    def deep_merge(a,b):
+    # Merge: disk overrides embedded keys; embedded guarantees baseline
+    def deep_merge(a, b):
         out = dict(b)
-        for k,v in a.items():
+        for k, v in a.items():
             if isinstance(v, dict) and isinstance(out.get(k), dict):
                 out[k] = deep_merge(v, out[k])
             else:
                 out[k] = v
         return out
-    merged = deep_merge(disk, embedded)
-    return merged, bool(disk), bool(embedded)
+    merged = deep_merge(disk, EMBEDDED_KB)
+    return merged, bool(disk), True
 
 KB, disk_kb, emb_kb = load_kb()
 
 # ---------------- Document RAG-lite engine -----------------
-
 CHUNK_SIZE = 1100
 CHUNK_OVERLAP = 150
 
@@ -111,7 +206,6 @@ def split_text(txt: str, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     i = 0
     while i < len(txt):
         chunk = txt[i:i+chunk_size]
-        # try to break at sentence end
         last_dot = chunk.rfind(". ")
         if last_dot > 300:
             chunk = chunk[:last_dot+1]
@@ -141,8 +235,7 @@ def read_pdf(path: Path):
 def load_docs():
     docs = []
     for p in sorted(DOCS_DIR.glob("**/*")):
-        if p.is_dir():
-            continue
+        if p.is_dir(): continue
         if p.suffix.lower() in [".pdf"]:
             pages = read_pdf(p)
             for pg in pages:
@@ -213,16 +306,13 @@ def search_chunks(index, query, k=6):
         return [(index["docs"][i], float(sims[i])) for i in top]
 
 def synthesize_answer(query, hits):
-    # Simple extractive synthesis: pick top sentences containing key terms
     if not hits:
         return "### Answer\n\n- No reference passages found. Add PDFs/TXTs into the `docs/` folder and click **Rebuild index**."
     key_terms = [w for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) > 2]
     bullets = []
     for (doc, score) in hits:
         text = doc["text"]
-        # split into sentences
         sents = re.split(r"(?<=[.!?])\s+", text)
-        # score sentences by overlap with key terms
         ranked = sorted(sents, key=lambda s: sum(1 for w in key_terms if w in s.lower()), reverse=True)
         take = [s.strip() for s in ranked[:2] if s.strip()]
         for s in take:
@@ -234,7 +324,6 @@ def synthesize_answer(query, hits):
     for b in bullets[:10]:
         if not b.startswith("- "): b = "- " + b
         md.append(b)
-    # Sources
     md.append("\n### Sources")
     seen = set()
     for (doc, score) in hits[:8]:
@@ -244,9 +333,15 @@ def synthesize_answer(query, hits):
             seen.add(label)
     return "\n".join(md)
 
+def linkify(ref: str) -> str:
+    for key, url in REF_LINKS.items():
+        if key.lower() in ref.lower():
+            return f"- [{ref}]({url})"
+    return "- " + ref
+
 # ---------------- UI -----------------
 st.title("FDA Cell Therapy CMC Bot — US Only (v%s)" % APP_VERSION)
-st.caption("Now with **document search** over your local FDA/ICH references. Add PDFs/TXTs to the `docs/` folder and click **Rebuild index**.")
+st.caption("Document search over your local FDA/ICH references + structured quick answers.")
 
 tab1, tab2 = st.tabs(["Ask (Document search)", "Quick Starters (KB)"])
 
@@ -297,7 +392,7 @@ with tab2:
                 for it in items:
                     s = str(it)
                     if sec == "References":
-                        out.append(f"- {s}")
+                        out.append(linkify(s))
                     else:
                         if not s.startswith("- "): s = "- " + s
                         out.append(s)
@@ -317,5 +412,5 @@ with st.expander("Status / Debug"):
         "index_backend": (idx or {}).get("backend") if idx else None,
         "chunks_indexed": n_chunks,
         "files_indexed": n_files,
-        "pdf_support": "ok" if True else "missing pypdf"
+        "pdf_support": "ok" if PDF_OK else "missing pypdf"
     })

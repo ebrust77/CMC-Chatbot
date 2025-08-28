@@ -1,11 +1,7 @@
-# FDA Cell Therapy CMC Bot (v1.3, US Only) — with Document Search
+# FDA Cell Therapy CMC Bot (v1.3.1, US Only)
 
-**New:** Full-text search over your local reference docs (PDF/TXT/MD) using SBERT embeddings with automatic fallback to TF‑IDF if SBERT isn’t available.
-
-## How it works
-- Put FDA/ICH/USP references (PDF or TXT) in the `docs/` folder.
-- Click **Rebuild index** in the app. This creates `index/rag_index.pkl`.
-- Ask questions in the **Ask (Document search)** tab. You’ll get an extractive answer + a **Sources** list (file names and pages).
+**Fix:** Embedded KB is now a Python dict (no YAML triple-quote), so the SyntaxError you saw cannot occur.
+**Features:** RAG-lite document search + structured KB quick answers; guaranteed output and a debug panel.
 
 ## Run
 ```bash
@@ -13,10 +9,10 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Requirements
-- If Internet is available at runtime, the app will use **Sentence-Transformers** (`all-MiniLM-L6-v2`) for better semantic search.
-- If not, it falls back to **TF‑IDF** (scikit‑learn) so it still works.
+## Deploy
+Push to GitHub (ensure `app.py` is at repo root). On Streamlit Cloud, set **Main file** to `app.py`.
 
-## Tips
-- Keep PDFs to a reasonable size and scope for faster indexing.
-- You can upload files from the UI; they’re saved into `docs/`. Click **Rebuild index** after uploading.
+## Use document search
+- Put PDFs/TXTs into `docs/` or upload via the UI.
+- Click **Rebuild index**.
+- Ask questions in the **Ask (Document search)** tab.
