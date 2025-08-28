@@ -1,77 +1,14 @@
 Topics:
-  Stability requirements:
+  Inspection & CRL themes (US-only, CGT):
     Cell Therapy:
       US (FDA):
         Summary:
-          - For cryopreserved cell therapies, FDA expects a phase-appropriate stability program covering frozen storage, shipping simulation, and post‑thaw hold; expiry should be data‑justified and linked to key quality attributes (e.g., potency, viability, identity, purity).
+          - Common public themes include aseptic validation gaps (duration/interventions), EM trending/alert-action control, airflow visualization, CCIT on final config, incomplete deviation/CAPA, potency/PPQ/comparability linkage.
         What FDA expects:
-          - A matrix of DS/DP/intermediates × conditions × time points × attributes; include shipping sims and worst‑case post‑thaw holds.
+          - Media fills mirroring worst-case with defined acceptance; robust EM with personnel/surface sites and trend review; smoke studies; CCIT; thorough investigations/CAPA; potency linked to MoA; PPQ evidence of control; predefined comparability rules.
         Checklist:
-          - Define matrix (0,1,3,6,9,12 mo etc), post‑thaw holds, shipping sim; lock limits; ensure methods fit for purpose.
-        CTD map:
-          - 3.2.P.8.1 / 3.2.P.8.2 with links to 3.2.P.5 and 3.2.P.5.3.
-        Example language:
-          - Expiry justified by trends through 12 months at −150 °C; shipping and 4‑hour post‑thaw holds met predefined criteria.
+          - APS design & acceptance; EM plan; smoke study report; CCIT data; deviation/CAPA system health; potency matrix & validation plan; PPQ protocol/report; comparability protocol with margins.
         References:
-          - CMC Information for Human Gene Therapy INDs (2020).
-  Shipper validation:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - FDA expects package system qualification (IQ/OQ/PQ) with worst‑case payloads and lanes; ongoing control via requalification and monitoring.
-        What FDA expects:
-          - Thermal mapping with calibrated probes; pre‑conditioning; summer/winter extremes; stress profiles.
-        Checklist:
-          - IQ spec/setup; OQ lab thermal; PQ end‑to‑end; acceptance (all probes within label range); shock/altitude as applicable.
-        CTD map:
-          - 3.2.P.3.5 (validation) with references in 3.2.P.3.
-        References:
-          - Manufacturing Considerations for CGT Products (2015).
-  Number of lots in batch analysis:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - FDA expects comprehensive batch analysis tables of all available lots to justify specs; lot count is risk‑ and data‑dependent.
-        What FDA expects:
-          - Present pre‑PPQ clinical + PPQ lots with stats; link to capability and control strategy.
-        CTD map:
-          - 3.2.P.5.1 / 3.2.P.5.6 with ties to 3.2.P.3.5.
-        References:
-          - ICH Q6B / Q2(R2) / Q14.
-  APS / Aseptic Process Validation:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - APS (media fills) mirror worst‑case duration & interventions; personnel qualification; EM trending; CCIT alignment.
-        What FDA expects:
-          - Three successful runs; acceptance 0 positives; airflow visualization; full intervention set.
-        References:
-          - Sterile Drug Products Produced by Aseptic Processing (2004).
-  Potency matrix (phase-appropriate):
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - MoA‑linked multi‑attribute potency with guardrails → specs and a defined reference strategy; validation increases by phase.
-        References:
-          - CMC Information for Human Gene Therapy INDs (2020).
-  Comparability — decision rules:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - Predefined, risk‑based plan with equivalence statistics and fail→action rules; integrate stability and release.
-        References:
-          - ICH Q5E.
-  PPQ readiness & BLA content:
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - BLA shows PPQ and state of control linking to control strategy/specs; cohesive validation summary.
-        References:
-          - Process Validation — General Principles and Practices (2011).
-  Release specifications (phase-appropriate):
-    Cell Therapy:
-      US (FDA):
-        Summary:
-          - RR/guardrails → validated acceptance criteria at BLA; align to MoA and capability.
-        References:
-          - ICH Q6B; ICH Q2(R2)/Q14.
+          - FDA Inspection Observations — Forms 483 dataset.
+          - FDA Warning Letters portal.
+          - FOIA Electronic Reading Room (redacted correspondence).

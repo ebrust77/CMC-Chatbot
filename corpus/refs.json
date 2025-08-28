@@ -1,0 +1,157 @@
+[
+  {
+    "title": "CMC Information for Human Gene Therapy INDs (2020)",
+    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/chemistry-manufacturing-and-control-cmc-information-human-gene-therapy-investigational",
+    "year": 2020,
+    "publisher": "FDA",
+    "topics": [
+      "stability",
+      "potency",
+      "specifications",
+      "comparability",
+      "manufacturing",
+      "cell therapy"
+    ],
+    "text": "Risk-based, phase-appropriate expectations for CGT CMC. Stability should include storage, shipping simulation, and post\u2011thaw hold when relevant. Methods trend toward validation by late stage. Potency links to MoA and often benefits from multi-attribute approaches. Specifications should be data-justified with discussion of variability and clinical relevance. Comparability plans should be prespecified with decision rules and statistics, integrating release and stability results."
+  },
+  {
+    "title": "Manufacturing Considerations for Human CGT Products (2015)",
+    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/manufacturing-considerations-human-cell-tissue-and-cellular-and-gene-therapy-products",
+    "year": 2015,
+    "publisher": "FDA",
+    "topics": [
+      "manufacturing",
+      "shipping",
+      "distribution",
+      "chain of custody",
+      "chain of identity",
+      "aseptic"
+    ],
+    "text": "Addresses aseptic handling, materials control, and distribution. For shipping, define pre\u2011conditioning, qualify packaging under environmental extremes, and monitor excursions. Maintain chain of identity and custody end\u2011to\u2011end. Describe thawing/mixing/dosing with controls that minimize open handling time. Validation and ongoing monitoring should reflect risk and intended commercial use."
+  },
+  {
+    "title": "Sterile Drug Products Produced by Aseptic Processing \u2014 cGMP (2004)",
+    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/sterile-drug-products-produced-aseptic-processing-current-good-manufacturing-practice",
+    "year": 2004,
+    "publisher": "FDA",
+    "topics": [
+      "aseptic processing",
+      "APS",
+      "media fill",
+      "environmental monitoring",
+      "cleanroom",
+      "ccit"
+    ],
+    "text": "Describes facility classification and controls, personnel qualification, environmental monitoring, airflow visualization, and aseptic process simulations (media fills). Simulations represent worst\u2011case duration and include routine and non\u2011routine interventions. Acceptance is typically zero contaminated units, with deviations investigated. ISO 5 at the point of aseptic manipulation with appropriate background; container closure integrity demonstrated on the final configuration."
+  },
+  {
+    "title": "Process Validation \u2014 General Principles and Practices (2011)",
+    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/process-validation-general-principles-and-practices",
+    "year": 2011,
+    "publisher": "FDA",
+    "topics": [
+      "validation",
+      "ppq",
+      "state of control",
+      "capability",
+      "sampling plan"
+    ],
+    "text": "Defines lifecycle process validation. PPQ demonstrates performance under routine conditions using a protocol with sampling plans, criteria, and deviation handling. Validation narratives should link PPQ outcomes to commercial specifications and show a state of control using scientific rationale and data, including capability or control charting. Ongoing Stage 3 monitoring continues post\u2011approval."
+  },
+  {
+    "title": "ICH Q5E: Comparability of Biotechnological Products",
+    "url": "https://www.ich.org/en/ich-guidelines/quality/q5e",
+    "year": 2005,
+    "publisher": "ICH",
+    "topics": [
+      "comparability",
+      "equivalence",
+      "pre post change",
+      "statistics"
+    ],
+    "text": "Principles for showing that a manufacturing change does not adversely affect product quality. Comparability should be planned with predefined tests, acceptance criteria, and appropriate statistics. Data should integrate release testing, characterization, and stability. The scope and sensitivity of the plan should match the risk of the change."
+  },
+  {
+    "title": "ICH Q6B: Specifications \u2014 Biotechnological/Biological Products",
+    "url": "https://www.ich.org/en/ich-guidelines/quality/q6b",
+    "year": 1999,
+    "publisher": "ICH",
+    "topics": [
+      "specifications",
+      "acceptance criteria",
+      "justification",
+      "ctd"
+    ],
+    "text": "Guidance on setting and justifying specifications for biological products. Limits reflect clinical relevance and process capability. Justification summarizes manufacturing history and analytical performance, and links to characterization data. Specification changes should be supported by data and appropriate regulatory communication."
+  },
+  {
+    "title": "ICH Q2(R2) / Q14 (Analytical Validation & Development)",
+    "url": "https://www.ich.org/en/projects/quality-guidelines/q2r2-q14",
+    "year": 2023,
+    "publisher": "ICH",
+    "topics": [
+      "analytical validation",
+      "analytical development",
+      "method lifecycle",
+      "potency"
+    ],
+    "text": "Q2(R2) describes validation characteristics (accuracy, precision, range, detection/quantitation, robustness); Q14 describes science\u2011 and risk\u2011based method development and control strategy. Together they encourage method lifecycle management with predefined performance criteria and documentation aligned to intended use. For potency, define system suitability, reference strategy, and variability controls."
+  },
+  {
+    "title": "USP <1079> Good Storage and Distribution Practices",
+    "url": "https://www.usp.org/",
+    "year": 2017,
+    "publisher": "USP",
+    "topics": [
+      "shipping",
+      "distribution",
+      "thermal qualification",
+      "monitoring"
+    ],
+    "text": "Discusses good practices for storage and distribution, including temperature\u2011controlled packaging, qualification strategies, and monitoring. Supports defining environmental profiles, payloads, acceptance criteria, and requalification triggers and excursion management."
+  },
+  {
+    "title": "FDA Inspection Observations \u2014 Common CGT/aseptic themes (Forms 483 dataset)",
+    "url": "https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-observations",
+    "year": 2025,
+    "publisher": "FDA",
+    "topics": [
+      "inspection",
+      "483",
+      "aseptic",
+      "EM",
+      "smoke studies",
+      "personnel qualification",
+      "data integrity"
+    ],
+    "text": "Public inspection observations frequently cite incomplete aseptic process simulations that do not mirror worst\u2011case duration or full intervention sets; weak environmental monitoring (missing personnel/surface sites, poor alert/action trending); insufficient airflow visualization/smoke studies; and gaps in personnel qualification and gowning practices. Other recurring findings include inadequate container closure integrity evidence on final configuration, incomplete deviation/CAPA investigations, and data integrity weaknesses in batch records or logbooks."
+  },
+  {
+    "title": "FDA Warning Letters \u2014 Sterility assurance / CGT manufacturing themes",
+    "url": "https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters",
+    "year": 2025,
+    "publisher": "FDA",
+    "topics": [
+      "warning letters",
+      "sterility assurance",
+      "aseptic processing",
+      "investigations",
+      "CAPA"
+    ],
+    "text": "Warning letters to sterile/CGT manufacturers often highlight deficient sterility assurance programs: inadequate media fill design, failure to investigate contamination events to root cause, ineffective CAPA, poor oversight of outsourced operations, and inadequate monitoring or maintenance of cleanroom conditions. Letters also cite incomplete qualification of equipment and utilities, and lack of robust procedures to prevent mix\u2011ups and maintain chain of identity/custody."
+  },
+  {
+    "title": "CRL/Review Themes \u2014 Publicly available redacted letters and reviews (FOIA Reading Room)",
+    "url": "https://www.fda.gov/regulatory-information/freedom-information/foia-electronic-reading-room",
+    "year": 2025,
+    "publisher": "FDA",
+    "topics": [
+      "CRL",
+      "complete response",
+      "review themes",
+      "cell therapy",
+      "BLA"
+    ],
+    "text": "Where available via FOIA or sponsor postings, review/CRL themes for cell therapy frequently include: potency rationale not linked to MoA or lacking orthogonal support; insufficient comparability analyses bridging pre\u2011 and post\u2011change processes; inadequate evidence of PPQ readiness/state of control; gaps in aseptic validation scope or acceptance; instability or insufficient shipping/post\u2011thaw hold justification; and inconsistencies between specification justification and clinical/analytical variability."
+  }
+]

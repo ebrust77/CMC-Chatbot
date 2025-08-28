@@ -1,7 +1,6 @@
-# FDA Cell Therapy CMC Bot (v1.3.1, US Only)
+# FDA Cell Therapy CMC Bot (v1.5, US Only) — With Inspection & CRL Themes
 
-**Fix:** Embedded KB is now a Python dict (no YAML triple-quote), so the SyntaxError you saw cannot occur.
-**Features:** RAG-lite document search + structured KB quick answers; guaranteed output and a debug panel.
+Adds **inspection/CRL themes** to the built-in reference corpus (with links to FDA Inspection Observations, Warning Letters, and FOIA Reading Room).
 
 ## Run
 ```bash
@@ -10,9 +9,6 @@ streamlit run app.py
 ```
 
 ## Deploy
-Push to GitHub (ensure `app.py` is at repo root). On Streamlit Cloud, set **Main file** to `app.py`.
+Push to GitHub (ensure `app.py` is at repo root) and deploy on Streamlit Community Cloud.
 
-## Use document search
-- Put PDFs/TXTs into `docs/` or upload via the UI.
-- Click **Rebuild index**.
-- Ask questions in the **Ask (Document search)** tab.
+> Informational only; not legal or regulatory advice. Verify against the latest official documents.
